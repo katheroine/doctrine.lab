@@ -70,6 +70,7 @@ ConsoleRunner::run(
 **Testing bin script**
 
 ```bash
+$ mkdir src
 $ php bin/doctrine orm:schema-tool:create
 
 
