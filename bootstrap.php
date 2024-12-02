@@ -18,6 +18,7 @@ $connection = DriverManager::getConnection([
     'user' => 'doctrinelab',
     'password' => 'doctrinelab_password',
     'host' => '127.0.0.1',
+    'serverVersion' => '10.5.8-MariaDB'
 ], $config);
 
 // Entity Manager

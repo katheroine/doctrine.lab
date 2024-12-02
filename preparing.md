@@ -2,21 +2,41 @@
 
 ## Preparing
 
+**System (Debian-based Linux)**
+
+```bash
+sudo aptitude install php8.3-mysql
+```
+
+**Database (MySQL/MariaDB)**
+
+```
+create database doctrinelab;
+create user 'doctrinelab'@'127.0.0.1' identified by 'doctrinelab_password';
+grant all on doctrinelab.* to 'doctrinelab'@'127.0.0.1';
+flush privileges;
+```
+
 **composer.json**
 
 ```composer
 {
     "require": {
-        "doctrine/orm": "^3.1",
-        "symfony/cache": "^7.0"
+        "doctrine/orm": "^3",
+        "doctrine/dbal": "^4",
+        "symfony/cache": "^7"
+    },
+    "autoload": {
+        "psr-0": {"": "src/"}
     }
 }
-
 ```
 
 **Dependencies installing**
 
-`$ composer install`
+```bash
+composer install
+```
 
 **bootsprap.php**
 
@@ -36,11 +56,12 @@ $config = ORMSetup::createAttributeMetadataConfiguration(
 
 // Conection
 $connection = DriverManager::getConnection([
-    'driver' => 'pdo_mysql', // for MySQL database
+    'driver' => 'pdo_mysql', // for MySQL or MariaDB database
     'dbname' => 'doctrinelab',
     'user' => 'doctrinelab',
     'password' => 'doctrinelab_password',
     'host' => '127.0.0.1',
+    'serverVersion' => '10.5.8-MariaDB'// for MariaDB databas
 ], $config);
 
 // Entity Manager
@@ -68,9 +89,11 @@ ConsoleRunner::run(
 **Testing bin script**
 
 ```bash
-$ mkdir src
-$ php bin/doctrine orm:schema-tool:create
+mkdir src
+php bin/doctrine orm:schema-tool:create
+```
 
+```
 
  [OK] No Metadata Classes to process.
 
