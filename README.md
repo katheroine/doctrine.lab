@@ -2,6 +2,6 @@
 
 Laboratory of Doctrine.
 
-1. [Preparing](preparing.md)
-2. [Managing schema](managing_schema.md)
-3. [Data definition](data_definition.md)
+1. [Preparing](doc/preparing.md)
+2. [Managing schema](doc/managing_schema.md)
+3. [Data definition](doc/data_definition.md)

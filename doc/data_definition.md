@@ -1,4 +1,4 @@
-[⌂ Home](README.md)
+[⌂ Home](../README.md)
 [▲ Previous: Managing schema](managing_schema.md)
 
 ## Data definition

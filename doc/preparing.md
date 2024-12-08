@@ -1,4 +1,4 @@
-[⌂ Home](README.md)
+[⌂ Home](../README.md)
 [▼ Next: Managing schema](managing_schema.md)
 
 ## Preparing
