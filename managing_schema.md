@@ -1,5 +1,6 @@
 [⌂ Home](README.md)
 [▲ Previous: Preparing](preparing.md)
+[▼ Next: Data definition](data_definition.md)
 
 ## Managing schema
 
