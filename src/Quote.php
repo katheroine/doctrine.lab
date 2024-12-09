@@ -16,4 +16,42 @@ class Quote
     private ?string $source = null;
     #[ORM\Column(type: 'string')]
     private string $content;
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $content
+     *
+     * @return void
+     */
+    public function setContent(string $content)
+    {
+        $this->content = $content;
+    }
+
+    /**
+     * @param string $author
+     *
+     * @return void
+     */
+    public function setAuthor(string $author)
+    {
+        $this->author = $author;
+    }
+
+    /**
+     * @param string $source
+     *
+     * @return void
+     */
+    public function setSource(string $source)
+    {
+        $this->source = $source;
+    }
 }

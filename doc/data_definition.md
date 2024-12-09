@@ -1,9 +1,10 @@
 [⌂ Home](../README.md)
 [▲ Previous: Managing schema](managing_schema.md)
+[▼ Next: Data manipulation](data_manipulation.md)
 
 ## Data definition
 
-**bootstrap.php**
+**`bootstrap.php`**
 
 ```php
 <?php
@@ -39,7 +40,7 @@ $entityManager = new EntityManager($connection, $config);
 
 ```
 
-**src/Quote.php**
+**`src/Quote.php`**
 
 ```php
 <?php
@@ -67,6 +68,18 @@ class Quote
 
 ```bash
 php bin/doctrine orm:schema-tool:update --force --dump-sql
+```
+
+```
+
+ Updating database schema...
+
+     1 query was executed
+
+
+ [OK] Database schema updated successfully!
+
+
 ```
 
 Specifying both flags `--force` and `--dump-sql` will cause the DDL statements to be executed and then printed to the screen.
