@@ -36,6 +36,14 @@ class Quote
     }
 
     /**
+     * @return string
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
      * @param string $author
      *
      * @return void
@@ -46,6 +54,14 @@ class Quote
     }
 
     /**
+     * @return string
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
      * @param string $source
      *
      * @return void
@@ -53,5 +69,13 @@ class Quote
     public function setSource(string $source)
     {
         $this->source = $source;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSource()
+    {
+        return $this->source;
     }
 }

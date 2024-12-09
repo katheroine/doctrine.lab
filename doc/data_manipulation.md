@@ -1,5 +1,6 @@
 [⌂ Home](../README.md)
 [▲ Previous: Data definition](data_definition.md)
+[▼ Next: Data query](data_query.md)
 
 ## Data manipulation
 
