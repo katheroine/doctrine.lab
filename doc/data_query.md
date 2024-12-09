@@ -45,3 +45,70 @@ php list_quotes.php
 ✤ Somewhere, something incredible is waiting to be known.
  -- Miguel de Cervantes, "Don Quixote"
 ```
+
+### Querying for a single entity
+
+**`show_quote.php`**
+
+```php
+<?php
+// show_query.php <id>
+
+require_once "bootstrap.php";
+
+$id = $argv[1];
+
+$quote = $entityManager->find('Quote', $id);
+
+if ($quote === null) {
+    echo ("No quote found.\n");
+    exit(1);
+}
+
+$showPattern = "%s\n -- %s, \"%s\"\n";
+
+echo sprintf(
+    $showPattern,
+    $quote->getContent(),
+    $quote->getAuthor(),
+    $quote->getSource()
+);
+
+```
+
+**Console**
+
+```bash
+php show_quote.php 1
+```
+
+```
+I would always rather be happy than dignified.
+ -- Charlotte Brontë, "Jane Eyre"
+```
+
+```bash
+php show_quote.php 2
+```
+
+```
+Pain and suffering are always inevitable for a large intelligence and a deep heart.
+ -- Fyodor Dostoevsky, "Crime and Punishment"
+```
+
+```bash
+php show_quote.php 3
+```
+
+```
+Somewhere, something incredible is waiting to be known.
+ -- Miguel de Cervantes, "Don Quixote"
+```
+
+```bash
+php show_quote.php 4
+```
+
+```
+No quote found.
+```
