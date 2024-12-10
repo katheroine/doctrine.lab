@@ -1,9 +1,97 @@
 [⌂ Home](../README.md)
-[▲ Previous: Data manipulation](data_manipulation.md)
+[▲ Previous: Creating records](creating_records.md)
+[▼ Next: Updating records](updating_records.md)
 
-## Data query
+## Retrieving records
 
-### Querying for all the entities
+There must be defined appropriate accessors in the `Quote` class to make the possibility of reading `Quote` field values.
+
+```php
+<?php
+
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity]
+#[ORM\Table(name: 'quotes')]
+class Quote
+{
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
+    private ?int $id = null;
+    #[ORM\Column(type: 'string')]
+    private ?string $author = null;
+    #[ORM\Column(type: 'string')]
+    private ?string $source = null;
+    #[ORM\Column(type: 'string')]
+    private string $content;
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $content
+     *
+     * @return void
+     */
+    public function setContent(string $content)
+    {
+        $this->content = $content;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * @param string $author
+     *
+     * @return void
+     */
+    public function setAuthor(string $author)
+    {
+        $this->author = $author;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param string $source
+     *
+     * @return void
+     */
+    public function setSource(string $source)
+    {
+        $this->source = $source;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
+}
+
+```
+
+### Retrieving all the entities
 
 **`list_quotes.php`**
 
@@ -46,7 +134,7 @@ php list_quotes.php
  -- Miguel de Cervantes, "Don Quixote"
 ```
 
-### Querying for a single entity
+### Retrieving a single entity
 
 **`show_quote.php`**
 

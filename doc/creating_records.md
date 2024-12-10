@@ -1,10 +1,72 @@
 [⌂ Home](../README.md)
-[▲ Previous: Data definition](data_definition.md)
-[▼ Next: Data query](data_query.md)
+[▲ Previous: Creating table](creating_table.md)
+[▼ Next: Retrieving records](retrieving_records.md)
 
-## Data manipulation
+## Creating records
 
-### Creating
+There must be defined appropriate accessors in the `Quote` class to make the possibility of defining `Quote` field values and eventually retrieving the ID of the newly created `quotes` record.
+
+**`src/Quote.php`**
+
+```php
+<?php
+
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity]
+#[ORM\Table(name: 'quotes')]
+class Quote
+{
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
+    private ?int $id = null;
+    #[ORM\Column(type: 'string')]
+    private ?string $author = null;
+    #[ORM\Column(type: 'string')]
+    private ?string $source = null;
+    #[ORM\Column(type: 'string')]
+    private string $content;
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $content
+     *
+     * @return void
+     */
+    public function setContent(string $content)
+    {
+        $this->content = $content;
+    }
+
+    /**
+     * @param string $author
+     *
+     * @return void
+     */
+    public function setAuthor(string $author)
+    {
+        $this->author = $author;
+    }
+    /**
+     * @param string $source
+     *
+     * @return void
+     */
+    public function setSource(string $source)
+    {
+        $this->source = $source;
+    }
+}
+
+```
 
 **`create_quote.php`**
 
@@ -71,59 +133,4 @@ select * from quotes;
 |  3 | Miguel de Cervantes | Don Quixote          | Somewhere, something incredible is waiting to be known.                             |
 +----+---------------------+----------------------+-------------------------------------------------------------------------------------+
 3 rows in set (0,004 sec)
-```
-
-### Updating
-
-**`update_quote.php`**
-
-```php
-<?php
-// update_quote.php <id> <content> <author> <source>
-
-require_once "bootstrap.php";
-
-$id = $argv[1];
-$content = $argv[2];
-$author = $argv[3];
-$source = $argv[4];
-
-$quote = $entityManager->find('Quote', $id);
-
-if ($quote === null) {
-    echo "Product $id does not exist.\n";
-    exit(1);
-}
-
-$quote->setContent($content);
-$quote->setAuthor($author);
-$quote->setSource($source);
-
-$entityManager->flush();
-
-echo "Updated Quote with ID " . $id . "\n";
-
-```
-
-**Console**
-
-```bash
-php update_quote.php 2 "The strongest of all warriors are these two — Time and Patience." "Leo Tolstoy" "War and Peace"
-```
-
-**Database**
-
-```sql
-select * from quotes;
-```
-
-```
-+----+---------------------+---------------+--------------------------------------------------------------------+
-| id | author              | source        | content                                                            |
-+----+---------------------+---------------+--------------------------------------------------------------------+
-|  1 | Charlotte Brontë    | Jane Eyre     | I would always rather be happy than dignified.                     |
-|  2 | Leo Tolstoy         | War and Peace | The strongest of all warriors are these two — Time and Patience.   |
-|  3 | Miguel de Cervantes | Don Quixote   | Somewhere, something incredible is waiting to be known.            |
-+----+---------------------+---------------+--------------------------------------------------------------------+
-3 rows in set (0,001 sec)
 ```

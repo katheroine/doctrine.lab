@@ -1,8 +1,8 @@
 [⌂ Home](../README.md)
 [▲ Previous: Managing schema](managing_schema.md)
-[▼ Next: Data manipulation](data_manipulation.md)
+[▼ Next: Creating records](creating_records.md)
 
-## Data definition
+## Creating table
 
 **`bootstrap.php`**
 
@@ -62,7 +62,10 @@ class Quote
     #[ORM\Column(type: 'string')]
     private string $content;
 }
+
 ```
+
+That's all we need to create a simple table with no association.
 
 **Console**
 
