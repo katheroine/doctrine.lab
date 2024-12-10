@@ -68,13 +68,13 @@ class Quote
 
 ```
 
-**`create_quote.php`**
+**`example/create_quote.php`**
 
 ```php
 <?php
 // create_quote.php <content> <author> <source>
 
-require_once "bootstrap.php";
+require_once __DIR__ . "/../bootstrap.php";
 
 $content = $argv[1];
 $author = $argv[2];
@@ -95,7 +95,7 @@ echo "Created Quote with ID " . $quote->getId() . "\n";
 **Console**
 
 ```bash
-php create_quote.php "I would always rather be happy than dignified." "Charlotte Brontë" "Jane Eyre"
+php example/create_quote.php "I would always rather be happy than dignified." "Charlotte Brontë" "Jane Eyre"
 ```
 
 ```
@@ -103,7 +103,7 @@ Created Quote with ID 1
 ```
 
 ```bash
-php create_quote.php "Pain and suffering are always inevitable for a large intelligence and a deep heart." "Fyodor Dostoevsky" "Crime and Punishment"
+php example/create_quote.php "Pain and suffering are always inevitable for a large intelligence and a deep heart." "Fyodor Dostoevsky" "Crime and Punishment"
 ```
 
 ```
@@ -111,7 +111,7 @@ Created Quote with ID 2
 ```
 
 ```bash
-php create_quote.php "Somewhere, something incredible is waiting to be known." "Miguel de Cervantes" "Don Quixote"
+php example/create_quote.php "Somewhere, something incredible is waiting to be known." "Miguel de Cervantes" "Don Quixote"
 ```
 
 ```

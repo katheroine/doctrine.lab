@@ -93,13 +93,13 @@ class Quote
 
 ### Retrieving all the entities
 
-**`list_quotes.php`**
+**`example/list_quotes.php`**
 
 ```php
 <?php
 // list_quotes.php
 
-require_once "bootstrap.php";
+require_once __DIR__ . "/../bootstrap.php";
 
 $quoteRepository = $entityManager->getRepository('Quote');
 $quotes = $quoteRepository->findAll();
@@ -120,7 +120,7 @@ foreach ($quotes as $quote) {
 **Console**
 
 ```bash
-php list_quotes.php
+php example/list_quotes.php
 ```
 
 ```
@@ -136,13 +136,13 @@ php list_quotes.php
 
 ### Retrieving a single entity
 
-**`show_quote.php`**
+**`example/show_quote.php`**
 
 ```php
 <?php
 // show_query.php <id>
 
-require_once "bootstrap.php";
+require_once __DIR__ . "/../bootstrap.php";
 
 $id = $argv[1];
 
@@ -167,7 +167,7 @@ echo sprintf(
 **Console**
 
 ```bash
-php show_quote.php 1
+php example/show_quote.php 1
 ```
 
 ```
@@ -176,7 +176,7 @@ I would always rather be happy than dignified.
 ```
 
 ```bash
-php show_quote.php 2
+php example/show_quote.php 2
 ```
 
 ```
@@ -185,7 +185,7 @@ Pain and suffering are always inevitable for a large intelligence and a deep hea
 ```
 
 ```bash
-php show_quote.php 3
+php example/show_quote.php 3
 ```
 
 ```
@@ -194,7 +194,7 @@ Somewhere, something incredible is waiting to be known.
 ```
 
 ```bash
-php show_quote.php 4
+php example/show_quote.php 4
 ```
 
 ```

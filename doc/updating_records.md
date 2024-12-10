@@ -9,7 +9,7 @@
 <?php
 // update_quote.php <id> <content> <author> <source>
 
-require_once "bootstrap.php";
+require_once __DIR__ . "/../bootstrap.php";
 
 $id = $argv[1];
 $content = $argv[2];
@@ -36,7 +36,7 @@ echo "Updated Quote with ID " . $id . "\n";
 **Console**
 
 ```bash
-php update_quote.php 2 "The strongest of all warriors are these two — Time and Patience." "Leo Tolstoy" "War and Peace"
+php example/update_quote.php 2 "The strongest of all warriors are these two — Time and Patience." "Leo Tolstoy" "War and Peace"
 ```
 
 **Database**
