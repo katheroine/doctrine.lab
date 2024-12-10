@@ -149,7 +149,7 @@ $id = $argv[1];
 $quote = $entityManager->find('Quote', $id);
 
 if ($quote === null) {
-    echo ("No quote found.\n");
+    echo ("No Quote found.\n");
     exit(1);
 }
 

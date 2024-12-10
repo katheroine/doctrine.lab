@@ -11,7 +11,7 @@ $source = $argv[4];
 $quote = $entityManager->find('Quote', $id);
 
 if ($quote === null) {
-    echo "Product $id does not exist.\n";
+    echo "Quote $id does not exist.\n";
     exit(1);
 }
 
