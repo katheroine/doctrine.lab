@@ -9,3 +9,4 @@ Laboratory of Doctrine.
 5. [Retrieving records](doc/retrieving_records.md)
 6. [Updating records](doc/updating_records.md)
 7. [Deleting records](doc/deleting_records.md)
+8. [Associations](doc/associations.md)
