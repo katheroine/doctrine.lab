@@ -12,14 +12,16 @@ class Source
     #[ORM\GeneratedValue]
     private ?int $id = null;
     #[ORM\Column(type: 'string')]
+    private ?string $author = null;
+    #[ORM\Column(type: 'string')]
     private string $title;
     #[ORM\Column(type: 'string')]
     private string $description;
+    /**
+     * @var Collection<int, Quote>
+     */
+    #[ORM\OneToMany(targetEntity: Quote::class, mappedBy: 'source')]
+    private Collection $quotes;
     #[ORM\Column(type: 'datetime')]
     private ?DateTime $originalPublicationDate;
-    /**
-     * @var Collection<int, Product>
-     */
-    #[ORM\ManyToMany(targetEntity: Author::class, inversedBy: 'sources')]
-    private Collection $authors;
 }

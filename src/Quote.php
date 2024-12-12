@@ -12,8 +12,11 @@ class Quote
     private ?int $id = null;
     #[ORM\Column(type: 'string')]
     private ?string $author = null;
-    #[ORM\Column(type: 'string')]
-    private ?string $source = null;
+    /**
+     * @var Source|null
+     */
+    #[ORM\ManyToOne(targetEntity: Source::class, inversedBy: 'quotes')]
+    private ?Source $source = null;
     #[ORM\Column(type: 'string')]
     private string $content;
 
