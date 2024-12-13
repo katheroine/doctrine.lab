@@ -1,6 +1,6 @@
 [⌂ Home](../../README.md)
 [⬆ Up: Associations](README.md)
-[▲ Previous: Deleting records](../deleting_records.md)
+[▲ Previous: One to one](one_to_one.md)
 
 ### One to many
 
