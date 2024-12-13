@@ -1,21 +1,18 @@
-[⌂ Home](../README.md)
-[▲ Previous: Reading records](reading_records.md)
-[▼ Next: Deleting records](deleting_records.md)
+[⌂ Home](../../README.md)
+[▲ Previous: Updating records](updating_records.md)
+[▼ Next: One to one](../associations/one_to_one.md)
 
-## Updating records
+### Deleting records
 
-**`update_quote.php`**
+**`example/crud_operations/delete_quote.php`**
 
 ```php
 <?php
-// update_quote.php <id> <content> <author> <source>
+// delete_quote.php <id>
 
 require_once __DIR__ . "/../bootstrap.php";
 
 $id = $argv[1];
-$content = $argv[2];
-$author = $argv[3];
-$source = $argv[4];
 
 $quote = $entityManager->find('Quote', $id);
 
@@ -24,20 +21,17 @@ if ($quote === null) {
     exit(1);
 }
 
-$quote->setContent($content);
-$quote->setAuthor($author);
-$quote->setSource($source);
-
+$entityManager->remove($quote);
 $entityManager->flush();
 
-echo "Updated Quote with ID " . $id . "\n";
+echo "Deleted Quote with ID " . $id . "\n";
 
 ```
 
 **Console**
 
 ```bash
-php example/update_quote.php 2 "The strongest of all warriors are these two — Time and Patience." "Leo Tolstoy" "War and Peace"
+php example/crud_operations/delete_quote.php 1
 ```
 
 **Database**
@@ -50,10 +44,8 @@ select * from quotes;
 +----+---------------------+---------------+--------------------------------------------------------------------+
 | id | author              | source        | content                                                            |
 +----+---------------------+---------------+--------------------------------------------------------------------+
-|  1 | Charlotte Brontë    | Jane Eyre     | I would always rather be happy than dignified.                     |
 |  2 | Leo Tolstoy         | War and Peace | The strongest of all warriors are these two — Time and Patience.   |
 |  3 | Miguel de Cervantes | Don Quixote   | Somewhere, something incredible is waiting to be known.            |
 +----+---------------------+---------------+--------------------------------------------------------------------+
-3 rows in set (0,001 sec)
+2 rows in set (0,001 sec)
 ```
-

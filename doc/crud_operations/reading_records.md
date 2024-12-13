@@ -1,8 +1,8 @@
-[⌂ Home](../README.md)
+[⌂ Home](../../README.md)
 [▲ Previous: Creating records](creating_records.md)
 [▼ Next: Updating records](updating_records.md)
 
-## Retrieving records
+### Reading records
 
 There must be defined appropriate accessors in the `Quote` class to make the possibility of reading `Quote` field values.
 
@@ -91,9 +91,9 @@ class Quote
 
 ```
 
-### Retrieving all the entities
+#### Reading all the entities
 
-**`example/list_quotes.php`**
+**`example/crud_operations/list_quotes.php`**
 
 ```php
 <?php
@@ -120,7 +120,7 @@ foreach ($quotes as $quote) {
 **Console**
 
 ```bash
-php example/list_quotes.php
+php example/crud_operations/list_quotes.php
 ```
 
 ```
@@ -134,9 +134,9 @@ php example/list_quotes.php
  -- Miguel de Cervantes, "Don Quixote"
 ```
 
-### Retrieving a single entity
+#### Reading a single entity
 
-**`example/show_quote.php`**
+**`example/crud_operations/show_quote.php`**
 
 ```php
 <?php
@@ -167,7 +167,7 @@ echo sprintf(
 **Console**
 
 ```bash
-php example/show_quote.php 1
+php example/crud_operations/show_quote.php 1
 ```
 
 ```
@@ -176,7 +176,7 @@ I would always rather be happy than dignified.
 ```
 
 ```bash
-php example/show_quote.php 2
+php example/crud_operations/show_quote.php 2
 ```
 
 ```
@@ -185,7 +185,7 @@ Pain and suffering are always inevitable for a large intelligence and a deep hea
 ```
 
 ```bash
-php example/show_quote.php 3
+php example/crud_operations/show_quote.php 3
 ```
 
 ```
@@ -194,7 +194,7 @@ Somewhere, something incredible is waiting to be known.
 ```
 
 ```bash
-php example/show_quote.php 4
+php example/crud_operations/show_quote.php 4
 ```
 
 ```

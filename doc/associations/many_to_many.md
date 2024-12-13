@@ -1,7 +1,7 @@
-[⌂ Home](../README.md)
-[▲ Previous: Deleting records](deleting_records.md)
+[⌂ Home](../../README.md)
+[▲ Previous: One to many](one_to_many.md)
 
-## Associations
+### Many to many
 
 **`src\Author.php`**
 

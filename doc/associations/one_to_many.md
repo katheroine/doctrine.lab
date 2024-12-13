@@ -1,6 +1,6 @@
 [⌂ Home](../../README.md)
-[⬆ Up: Associations](README.md)
 [▲ Previous: One to one](one_to_one.md)
+[▼ Next: Many to many](many_to_many.md)
 
 ### One to many
 

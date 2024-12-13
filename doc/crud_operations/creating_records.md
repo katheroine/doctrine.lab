@@ -1,8 +1,8 @@
-[⌂ Home](../README.md)
-[▲ Previous: Creating table](creating_table.md)
+[⌂ Home](../../README.md)
+[▲ Previous: Managing schema](../managing_schema.md)
 [▼ Next: Reading records](reading_records.md)
 
-## Creating records
+### Creating records
 
 There must be defined appropriate accessors in the `Quote` class to make the possibility of defining `Quote` field values and eventually retrieving the ID of the newly created `quotes` record.
 
@@ -68,7 +68,7 @@ class Quote
 
 ```
 
-**`example/create_quote.php`**
+**`example/crud_operations/create_quote.php`**
 
 ```php
 <?php
