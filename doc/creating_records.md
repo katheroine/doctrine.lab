@@ -1,6 +1,6 @@
 [⌂ Home](../README.md)
 [▲ Previous: Creating table](creating_table.md)
-[▼ Next: Retrieving records](retrieving_records.md)
+[▼ Next: Reading records](reading_records.md)
 
 ## Creating records
 

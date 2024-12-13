@@ -1,5 +1,5 @@
 [⌂ Home](../README.md)
-[▲ Previous: Retrieving records](retrieving_records.md)
+[▲ Previous: Reading records](reading_records.md)
 [▼ Next: Deleting records](deleting_records.md)
 
 ## Updating records
