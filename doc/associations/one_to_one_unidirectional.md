@@ -2,9 +2,7 @@
 [▲ Previous: Deleting records](../crud_operations/deleting_records.md)
 [▼ Next: One to many](one_to_many.md)
 
-### One to one
-
-#### Unidirectional
+### One to one: Unidirectional
 
 **`src/PersonalDetails`**
 

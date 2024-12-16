@@ -1,5 +1,5 @@
 [⌂ Home](../../README.md)
-[▲ Previous: One to one](one_to_one.md)
+[▲ Previous: One to one: Unidiractional](one_to_one_unidirectional.md)
 [▼ Next: Many to many](many_to_many.md)
 
 ### One to many

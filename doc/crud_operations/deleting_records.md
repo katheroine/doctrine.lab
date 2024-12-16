@@ -1,6 +1,6 @@
 [⌂ Home](../../README.md)
 [▲ Previous: Updating records](updating_records.md)
-[▼ Next: One to one](../associations/one_to_one.md)
+[▼ Next: One to one: Unidirectional](../associations/one_to_one_unidirectional.md)
 
 ### Deleting records
 
