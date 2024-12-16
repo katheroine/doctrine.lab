@@ -1,7 +1,7 @@
 <?php
 // update_quote.php <id> <content> <author> <source>
 
-require_once __DIR__ . "/../bootstrap.php";
+require_once __DIR__ . "/../../bootstrap.php";
 
 $id = $argv[1];
 $content = $argv[2];
