@@ -18,4 +18,32 @@ class Author
     #[ORM\OneToOne(targetEntity: PersonalDetails::class)]
     #[ORM\JoinColumn(name: 'personal_details_id', referencedColumnName: 'id')]
     private PersonalDetails $personalDetails;
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $penname
+     *
+     * @return void
+     */
+    public function setPenname(string $penname)
+    {
+        $this->penname = $penname;
+    }
+
+    /**
+     * @param PersonalDetails $personalDetails
+     *
+     * @return void
+     */
+    public function setPersonalDetails(PersonalDetails $personalDetails)
+    {
+        $this->personalDetails = $personalDetails;
+    }
 }

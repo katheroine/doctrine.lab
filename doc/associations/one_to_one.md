@@ -21,9 +21,9 @@ class PersonalDetails
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue]
     private ?int $id = null;
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(type: 'string', name: 'first_name')]
     private string $firstName;
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(type: 'string', name: 'last_name')]
     private string $lastName;
 }
 
@@ -99,14 +99,14 @@ describe personal_details;
 ```
 
 ```
-+-----------+--------------+------+-----+---------+----------------+
-| Field     | Type         | Null | Key | Default | Extra          |
-+-----------+--------------+------+-----+---------+----------------+
-| id        | int(11)      | NO   | PRI | NULL    | auto_increment |
-| firstName | varchar(255) | NO   |     | NULL    |                |
-| lastName  | varchar(255) | NO   |     | NULL    |                |
-+-----------+--------------+------+-----+---------+----------------+
-3 rows in set (0,002 sec)
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| id         | int(11)      | NO   | PRI | NULL    | auto_increment |
+| first_name | varchar(255) | NO   |     | NULL    |                |
+| last_name  | varchar(255) | NO   |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+3 rows in set (0,011 sec)
 ```
 
 ```sql
@@ -122,4 +122,131 @@ describe authors;
 | personal_details_id | int(11)      | YES  | UNI | NULL    |                |
 +---------------------+--------------+------+-----+---------+----------------+
 3 rows in set (0,003 sec)
+```
+
+**`src/PersonalDetails`**
+
+```php
+<?php
+
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity]
+#[ORM\Table(name: 'personal_details')]
+class PersonalDetails
+{
+    // ...
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $firstName
+     *
+     * @return void
+     */
+    public function setFirstName(string $firstName)
+    {
+        $this->firstName = $firstName;
+    }
+
+    /**
+     * @param string $lastName
+     *
+     * @return void
+     */
+    public function setLastName(string $lastName)
+    {
+        $this->lastName = $lastName;
+    }
+}
+
+```
+
+**`src\Author`**
+
+```php
+<?php
+
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity]
+#[ORM\Table(name: 'authors')]
+class Author
+{
+    // ...
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $penname
+     *
+     * @return void
+     */
+    public function setPenname(string $penname)
+    {
+        $this->penname = $penname;
+    }
+
+    /**
+     * @param PersonalDetails $personalDetails
+     *
+     * @return void
+     */
+    public function setPersonalDetails(PersonalDetails $personalDetails)
+    {
+        $this->personalDetails = $personalDetails;
+    }
+}
+
+```
+
+**Console**
+
+```bash
+php example/associations/one_to_one_unidirectional_create.php "Bolesław Prus" "Aleksander" "Głowacki"
+```
+
+```
+Created PersonalDetails with ID 1
+Created Author with ID 1
+```
+
+**Database**
+
+```sql
+select * from personal_details;
+```
+
+```
++----+------------+-----------+
+| id | first_name | last_name |
++----+------------+-----------+
+|  1 | Aleksander | Głowacki  |
++----+------------+-----------+
+1 row in set (0,004 sec)
+```
+
+```sql
+select * from authors;
+```
+
+```
++----+----------------+---------------------+
+| id | penname        | personal_details_id |
++----+----------------+---------------------+
+|  1 | Bolesław Prus  |                   1 |
++----+----------------+---------------------+
+1 row in set (0,001 sec)
 ```
