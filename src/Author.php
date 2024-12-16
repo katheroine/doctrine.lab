@@ -38,6 +38,14 @@ class Author
     }
 
     /**
+     * @return string
+     */
+    public function getPenname()
+    {
+        return $this->penname;
+    }
+
+    /**
      * @param PersonalDetails $personalDetails
      *
      * @return void
@@ -45,5 +53,13 @@ class Author
     public function setPersonalDetails(PersonalDetails $personalDetails)
     {
         $this->personalDetails = $personalDetails;
+    }
+
+    /**
+     * @return PersonalDetails
+     */
+    public function getPersonalDetails()
+    {
+        return $this->personalDetails;
     }
 }

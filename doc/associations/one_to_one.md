@@ -250,3 +250,79 @@ select * from authors;
 +----+----------------+---------------------+
 1 row in set (0,001 sec)
 ```
+
+**`src/PersonalDetails`**
+
+```php
+<?php
+
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity]
+#[ORM\Table(name: 'personal_details')]
+class PersonalDetails
+{
+    // ...
+
+    /**
+     * @return string
+     */
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
+
+    // ...
+
+    /**
+     * @return string
+     */
+    public function getLastName()
+    {
+        return $this->lastName;
+    }
+}
+
+```
+
+**`src\Author`**
+
+```php
+<?php
+
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity]
+#[ORM\Table(name: 'authors')]
+class Author
+{
+    // ...
+
+    /**
+     * @return string
+     */
+    public function getPenname()
+    {
+        return $this->penname;
+    }
+
+    // ...
+
+    /**
+     * @return PersonalDetails
+     */
+    public function getPersonalDetails()
+    {
+        return $this->personalDetails;
+    }
+}
+
+```
+
+```bash
+php example/associations/one_to_one_unidirectional_read.php 1
+```
+
+```
+Bolesław Prus (Aleksander Głowacki)
+```

@@ -34,6 +34,14 @@ class PersonalDetails
     }
 
     /**
+     * @return string
+     */
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
+
+    /**
      * @param string $lastName
      *
      * @return void
@@ -41,5 +49,13 @@ class PersonalDetails
     public function setLastName(string $lastName)
     {
         $this->lastName = $lastName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastName()
+    {
+        return $this->lastName;
     }
 }
