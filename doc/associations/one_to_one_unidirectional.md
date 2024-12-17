@@ -1,10 +1,10 @@
 [⌂ Home](../../README.md)
 [▲ Previous: Deleting records](../crud_operations/deleting_records.md)
-[▼ Next: One to many](one_to_many.md)
+[▼ Next: One to one: Bidirectional](../associations/one_to_one_bidirectional.md)
 
 ### One to one: Unidirectional
 
-**`src/PersonalDetails`**
+**`src/PersonalDetails.php`**
 
 ```php
 <?php
@@ -27,7 +27,7 @@ class PersonalDetails
 
 ```
 
-**`src\Author`**
+**`src\Author.php`**
 
 ```php
 <?php
@@ -122,7 +122,7 @@ describe authors;
 3 rows in set (0,003 sec)
 ```
 
-**`src/PersonalDetails`**
+**`src/PersonalDetails.php`**
 
 ```php
 <?php
@@ -166,7 +166,7 @@ class PersonalDetails
 
 ```
 
-**`src\Author`**
+**`src\Author.php`**
 
 ```php
 <?php
@@ -210,6 +210,35 @@ class Author
 
 ```
 
+**`example/associations/one_to_one_unidirectional_create.php`**
+
+```php
+<?php
+// one_to_one_unidirectional_create.php <penname> <first_name> <last_name>
+
+require_once __DIR__ . "/../../bootstrap.php";
+
+$penname = $argv[1];
+$firstName = $argv[2];
+$lastName = $argv[3];
+
+$personalDetails = new PersonalDetails();
+$personalDetails->setFirstName($firstName);
+$personalDetails->setLastName($lastName);
+
+$author = new Author();
+$author->setPenname($penname);
+$author->setPersonalDetails($personalDetails);
+
+$entityManager->persist($personalDetails);
+$entityManager->persist($author);
+$entityManager->flush();
+
+echo "Created PersonalDetails with ID " . $personalDetails->getId() . "\n";
+echo "Created Author with ID " . $author->getId() . "\n";
+
+```
+
 **Console**
 
 ```bash
@@ -249,7 +278,7 @@ select * from authors;
 1 row in set (0,001 sec)
 ```
 
-**`src/PersonalDetails`**
+**`src/PersonalDetails.php`**
 
 ```php
 <?php
@@ -283,7 +312,7 @@ class PersonalDetails
 
 ```
 
-**`src\Author`**
+**`src\Author.php`**
 
 ```php
 <?php
@@ -314,6 +343,34 @@ class Author
         return $this->personalDetails;
     }
 }
+
+```
+
+**`example/associations/one_to_one_unidirectional_read.php`**
+
+```php
+<?php
+// one_to_one_unidirectional_read.php <id>
+
+require_once __DIR__ . "/../../bootstrap.php";
+
+$id = $argv[1];
+
+$author = $entityManager->find('Author', $id);
+
+if ($author === null) {
+    echo ("No Author found.\n");
+    exit(1);
+}
+
+$showPattern = "%s (%s %s)\n";
+
+echo sprintf(
+    $showPattern,
+    $author->getPenname(),
+    $author->getPersonalDetails()->getFirstName(),
+    $author->getPersonalDetails()->getLastName()
+);
 
 ```
 

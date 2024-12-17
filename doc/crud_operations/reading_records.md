@@ -6,6 +6,8 @@
 
 There must be defined appropriate accessors in the `Quote` class to make the possibility of reading `Quote` field values.
 
+**`src/Quote.php`**
+
 ```php
 <?php
 

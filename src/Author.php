@@ -18,6 +18,11 @@ class Author
     #[ORM\OneToOne(targetEntity: PersonalDetails::class)]
     #[ORM\JoinColumn(name: 'personal_details_id', referencedColumnName: 'id')]
     private PersonalDetails $personalDetails;
+    /**
+     * @var AuthorAutopresentation
+     */
+    #[ORM\OneToOne(targetEntity: AuthorAutopresentation::class, mappedBy: 'author')]
+    private ?AuthorAutopresentation $autopresentation = null;
 
     /**
      * @return int
