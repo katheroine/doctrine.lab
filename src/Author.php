@@ -67,4 +67,12 @@ class Author
     {
         return $this->personalDetails;
     }
+
+    /**
+     * @return AuthorAutopresentation
+     */
+    public function getAutopresentation()
+    {
+        return $this->autopresentation;
+    }
 }

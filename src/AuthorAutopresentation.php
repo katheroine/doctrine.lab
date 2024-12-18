@@ -37,6 +37,14 @@ class AuthorAutopresentation
     }
 
     /**
+     * @return string
+     */
+    public function getBio()
+    {
+        return $this->bio;
+    }
+
+    /**
      * @param Author $author
      *
      * @return void
@@ -44,5 +52,13 @@ class AuthorAutopresentation
     public function setAuthor(Author $author)
     {
         $this->author = $author;
+    }
+
+    /**
+     * @return Author
+     */
+    public function getAuthor()
+    {
+        return $this->author;
     }
 }

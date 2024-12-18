@@ -257,3 +257,131 @@ select * from author_autopresentations;
 +----+----------------------------------------+-----------+
 4 rows in set (0,000 sec)
 ```
+
+**`src\Author`**
+
+```php
+<?php
+
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity]
+#[ORM\Table(name: 'authors')]
+class Author
+{
+    // ...
+
+    /**
+     * @return AuthorAutopresentation
+     */
+    public function getAutopresentation()
+    {
+        return $this->autopresentation;
+    }
+}
+
+```
+
+**`src/AuthorAutopresentation.php`**
+
+```php
+<?php
+
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity]
+#[ORM\Table(name: 'author_autopresentations')]
+class AuthorAutopresentation
+{
+    // ...
+
+    /**
+     * @return Author
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+}
+
+```
+
+**`php example/associations/one_to_one_bidirectional_read.php`**
+
+```php
+<?php
+// one_to_one_bidirectional_read.php <entity> <id>
+
+require_once __DIR__ . "/../../bootstrap.php";
+
+$entity = strtolower($argv[1]);
+$id = $argv[2];
+
+$showPattern = "%s (%s %s)\n%s\n\n";
+
+switch($entity) {
+    case 'author':
+        readAuthor($id, $entityManager, $showPattern);
+        break;
+    case 'autopresentation':
+        readAutopresentation($id, $entityManager, $showPattern);
+        break;
+}
+
+function readAuthor(int $id, $entityManager, $showPattern)
+{
+    $author = $entityManager->find('Author', $id);
+
+    if ($author === null) {
+        echo ("No Author found.\n");
+        exit(1);
+    }
+
+    echo sprintf(
+        $showPattern,
+        $author->getPenname(),
+        $author->getPersonalDetails()->getFirstName(),
+        $author->getPersonalDetails()->getLastName(),
+        $author->getAutopresentation()?->getBio()
+    );
+}
+
+function readAutopresentation(int $id, $entityManager, $showPattern)
+{
+    $autopresentation = $entityManager->find('AuthorAutopresentation', $id);
+
+    if ($autopresentation === null) {
+        echo ("No Autopresentation found.\n");
+        exit(1);
+    }
+
+    echo sprintf(
+        $showPattern,
+        $autopresentation->getAuthor()->getPenname(),
+        $autopresentation->getAuthor()->getPersonalDetails()->getFirstName(),
+        $autopresentation->getAuthor()->getPersonalDetails()->getLastName(),
+        $autopresentation->getBio()
+    );
+}
+
+```
+
+**Console**
+
+```bash
+php example/associations/one_to_one_bidirectional_read.php author 2
+```
+
+```
+Jasmine Argenta (Nerdine)
+I am a compulsive tutorial creator.
+```
+
+```bash
+php example/associations/one_to_one_bidirectional_read.php autopresentation 1
+```
+
+```
+Jasmine Argenta (Geek Duck)
+I am a compulsive tutorial creator.
+```
