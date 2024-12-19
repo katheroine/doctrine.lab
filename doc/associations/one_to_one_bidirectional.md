@@ -1,6 +1,6 @@
 [⌂ Home](../../README.md)
 [▲ Previous: One to one: Unidirectional](../associations/one_to_one_unidirectional.md)
-[▼ Next: One to many](one_to_many.md)
+[▼ Next: One to many: Unidirectional](one_to_many_unidirectional.md)
 
 ### One to one: Unidirectional
 

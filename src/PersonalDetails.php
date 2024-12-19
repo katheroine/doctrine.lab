@@ -1,6 +1,7 @@
 <?php
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'personal_details')]
@@ -14,6 +15,14 @@ class PersonalDetails
     private string $firstName;
     #[ORM\Column(type: 'string', name: 'last_name')]
     private string $lastName;
+    /**
+     * @var Collection<int, Email>
+     */
+    #[ORM\ManyToMany(targetEntity: Email::class)]
+    #[ORM\JoinTable(name: 'personal_details_emails')]
+    #[ORM\JoinColumn(name: 'personal_details_id', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'email_id', referencedColumnName: 'id', unique: true)]
+    private Collection $emails;
 
     /**
      * @return int
