@@ -84,4 +84,11 @@ class PersonalDetails
         $this->emails->add($email);
     }
 
+    /**
+     * @return ArrayCollection
+     */
+    public function getEmails()
+    {
+        return $this->emails;
+    }
 }

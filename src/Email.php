@@ -34,4 +34,15 @@ class Email
     {
         list($this->localPart, $this->domain) = explode('@', $email);
     }
+
+    /**
+     * @return string
+     */
+    public function get()
+    {
+        return
+            $this->localPart
+            . '@'
+            . $this->domain;
+    }
 }

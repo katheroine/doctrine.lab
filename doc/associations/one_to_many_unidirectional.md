@@ -204,12 +204,12 @@ class PersonalDetails
 
     // ...
 }
+
 ```
 
 **`php example/associations/one_to_many_unidirectional_create.php`**
 
 ```php
-<?php
 <?php
 // one_to_many_unidirectional_create.php <first_name> <last_name> <email>
 
@@ -289,4 +289,98 @@ select * from personal_details_emails;
 |                   3 |        1 |
 +---------------------+----------+
 1 row in set (0,001 sec)
+```
+
+**`src/Email.php`**
+
+```php
+<?php
+
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity]
+#[ORM\Table(name: 'emails')]
+class Email
+{
+    // ...
+
+    /**
+     * @return string
+     */
+    public function get()
+    {
+        return
+            $this->localPart
+            . '@'
+            . $this->domain;
+    }
+}
+
+```
+
+**`src/PersonalDetails.php`**
+
+```php
+<?php
+
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+
+#[ORM\Entity]
+#[ORM\Table(name: 'personal_details')]
+class PersonalDetails
+{
+    // ...
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getEmails()
+    {
+        return $this->emails;
+    }
+}
+
+```
+
+**`php example/associations/one_to_many_unidirectional_read.php`**
+
+```php
+<?php
+// one_to_one_bidirectional_read.php <id>
+
+require_once __DIR__ . "/../../bootstrap.php";
+
+$id = $argv[1];
+
+$personalDetails = $entityManager->find('PersonalDetails', $id);
+
+if ($personalDetails === null) {
+    echo ("No Personal Details found.\n");
+    exit(1);
+}
+
+$showPattern = "%s %s\n";
+
+echo sprintf(
+    $showPattern,
+    $personalDetails->getFirstName(),
+    $personalDetails->getLastName()
+);
+
+foreach($personalDetails->getEmails() as $email) {
+    print($email->get() . "\n");
+}
+
+```
+
+**Console**
+
+```bash
+php example/associations/one_to_many_unidirectional_read.php 3
+```
+
+```
+Florence Wood
+florence.wood@scribes.com
 ```
