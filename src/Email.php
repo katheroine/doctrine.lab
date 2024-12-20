@@ -15,5 +15,23 @@ class Email
     #[ORM\Column(type: 'string')]
     private $domain;
     #[ORM\Column(type: 'boolean', name: 'is_login')]
-    private $isLogin;
+    private $isLogin = false;
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $email
+     *
+     * @return void
+     */
+    public function set(string $email)
+    {
+        list($this->localPart, $this->domain) = explode('@', $email);
+    }
 }

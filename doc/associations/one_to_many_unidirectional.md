@@ -53,6 +53,7 @@ class PersonalDetails
 
     // ...
 }
+
 ```
 
 **Console**
@@ -141,4 +142,151 @@ describe personal_details_emails;
 | email_id            | int(11) | NO   | PRI | NULL    |       |
 +---------------------+---------+------+-----+---------+-------+
 2 rows in set (0,002 sec)
+```
+
+**`src/Email.php`**
+
+```php
+<?php
+
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity]
+#[ORM\Table(name: 'emails')]
+class Email
+{
+    // ...
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $email
+     *
+     * @return void
+     */
+    public function set(string $email)
+    {
+        list($this->localPart, $this->domain) = explode('@', $email);
+    }
+}
+
+```
+
+**`src/PersonalDetails.php`**
+
+```php
+<?php
+
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+
+#[ORM\Entity]
+#[ORM\Table(name: 'personal_details')]
+class PersonalDetails
+{
+    // ...
+
+    /**
+     * @param Email $email
+     *
+     * @return void
+     */
+    public function setEmail(Email $email)
+    {
+        $this->emails->add($email);
+    }
+
+    // ...
+}
+```
+
+**`php example/associations/one_to_many_unidirectional_create.php`**
+
+```php
+<?php
+<?php
+// one_to_many_unidirectional_create.php <first_name> <last_name> <email>
+
+require_once __DIR__ . "/../../bootstrap.php";
+
+$firstName = $argv[1];
+$lastName = $argv[2];
+$emailAddress = $argv[3];
+
+$email = new Email();
+$email->set($emailAddress);
+
+$personalDetails = new PersonalDetails();
+$personalDetails->setFirstName($firstName);
+$personalDetails->setLastName($lastName);
+$personalDetails->setEmail($email);
+
+$entityManager->persist($email);
+$entityManager->persist($personalDetails);
+$entityManager->flush();
+
+echo "Created Email with ID " . $email->getId() . "\n";
+echo "Created PersonalDetails with ID " . $personalDetails->getId() . "\n";
+
+```
+
+**Console**
+
+```bash
+php example/associations/one_to_many_unidirectional_create.php Florence Wood florence.wood@scribes.com
+```
+
+```
+Created Email with ID 1
+Created PersonalDetails with ID 3
+```
+
+**Database**
+
+
+```sql
+select * from personal_details;
+```
+
+```
++----+------------+-----------+
+| id | first_name | last_name |
++----+------------+-----------+
+|  1 | Aleksander | Głowacki  |
+|  2 | Jasmine    | Argenta   |
+|  3 | Florence   | Wood      |
++----+------------+-----------+
+3 rows in set (0,001 sec)
+```
+
+```sql
+select * from emails;
+```
+
+```
++----+---------------+-------------+----------+
+| id | local_part    | domain      | is_login |
++----+---------------+-------------+----------+
+|  1 | florence.wood | scribes.com |        0 |
++----+---------------+-------------+----------+
+1 row in set (0,001 sec)
+```
+
+```sql
+select * from personal_details_emails;
+```
+
+```
++---------------------+----------+
+| personal_details_id | email_id |
++---------------------+----------+
+|                   3 |        1 |
++---------------------+----------+
+1 row in set (0,001 sec)
 ```
