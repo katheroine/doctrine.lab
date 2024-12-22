@@ -1,6 +1,6 @@
 [⌂ Home](../../README.md)
 [▲ Previous: One to one: Bidirectional](../associations/one_to_one_bidirectional.md)
-[▼ Next: One to many](one_to_many.md)
+[▼ Next: One to many: Bidirectional](../associations/one_to_many_bidirectional.md)
 
 ### One to many: Bidirectional
 
@@ -248,7 +248,6 @@ Created PersonalDetails with ID 3
 ```
 
 **Database**
-
 
 ```sql
 select * from personal_details;

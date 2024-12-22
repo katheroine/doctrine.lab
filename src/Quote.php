@@ -10,8 +10,6 @@ class Quote
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue]
     private ?int $id = null;
-    #[ORM\Column(type: 'string')]
-    private ?string $author = null;
     /**
      * @var Source|null
      */
@@ -65,17 +63,17 @@ class Quote
     }
 
     /**
-     * @param string $source
+     * @param Source $source
      *
      * @return void
      */
-    public function setSource(string $source)
+    public function setSource(Source $source)
     {
         $this->source = $source;
     }
 
     /**
-     * @return string
+     * @return Source
      */
     public function getSource()
     {
