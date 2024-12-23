@@ -1,6 +1,8 @@
 <?php
 // delete_quote.php <id>
 
+declare(strict_types=1);
+
 require_once __DIR__ . "/../../bootstrap.php";
 
 $id = $argv[1];
@@ -8,11 +10,11 @@ $id = $argv[1];
 $quote = $entityManager->find('Quote', $id);
 
 if ($quote === null) {
-    echo "Quote $id does not exist.\n";
+    print("Quote $id does not exist.\n");
     exit(1);
 }
 
 $entityManager->remove($quote);
 $entityManager->flush();
 
-echo "Deleted Quote with ID " . $id . "\n";
+print("Deleted Quote with ID " . $id . "\n");
