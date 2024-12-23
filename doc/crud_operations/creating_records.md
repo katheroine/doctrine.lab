@@ -6,10 +6,12 @@
 
 There must be defined appropriate accessors in the `Quote` class to make the possibility of defining `Quote` field values and eventually retrieving the ID of the newly created `quotes` record.
 
-**`src/Quote.php`**
+[**`src/Quote.php`**](../../entities/crud_operations/creating_records/Quote.php)
 
 ```php
 <?php
+
+declare(strict_types=1);
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -21,10 +23,6 @@ class Quote
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue]
     private ?int $id = null;
-    #[ORM\Column(type: 'string')]
-    private ?string $author = null;
-    #[ORM\Column(type: 'string')]
-    private ?string $source = null;
     #[ORM\Column(type: 'string')]
     private string $content;
 
@@ -45,57 +43,36 @@ class Quote
     {
         $this->content = $content;
     }
-
-    /**
-     * @param string $author
-     *
-     * @return void
-     */
-    public function setAuthor(string $author)
-    {
-        $this->author = $author;
-    }
-    /**
-     * @param string $source
-     *
-     * @return void
-     */
-    public function setSource(string $source)
-    {
-        $this->source = $source;
-    }
 }
 
 ```
 
-**`example/crud_operations/create_quote.php`**
+[**`example/crud_operations/create_quote.php`**](../../example/crud_operations/create_quote.php)
 
 ```php
 <?php
-// create_quote.php <content> <author> <source>
+// create_quote.php <content>
+
+declare(strict_types=1);
 
 require_once __DIR__ . "/../../bootstrap.php";
 
 $content = $argv[1];
-$author = $argv[2];
-$source = $argv[3];
 
 $quote = new Quote();
 $quote->setContent($content);
-$quote->setAuthor($author);
-$quote->setSource($source);
 
 $entityManager->persist($quote);
 $entityManager->flush();
 
-echo "Created Quote with ID " . $quote->getId() . "\n";
+print("Created Quote with ID " . $quote->getId() . "\n");
 
 ```
 
 **Console**
 
 ```bash
-php example/create_quote.php "I would always rather be happy than dignified." "Charlotte Brontë" "Jane Eyre"
+php example/crud_operations/create_quote.php "I would always rather be happy than dignified."
 ```
 
 ```
@@ -103,7 +80,7 @@ Created Quote with ID 1
 ```
 
 ```bash
-php example/create_quote.php "Pain and suffering are always inevitable for a large intelligence and a deep heart." "Fyodor Dostoevsky" "Crime and Punishment"
+php example/crud_operations/create_quote.php "Pain and suffering are always inevitable for a large intelligence and a deep heart."
 ```
 
 ```
@@ -111,7 +88,7 @@ Created Quote with ID 2
 ```
 
 ```bash
-php example/create_quote.php "Somewhere, something incredible is waiting to be known." "Miguel de Cervantes" "Don Quixote"
+php example/crud_operations/create_quote.php "Somewhere, something incredible is waiting to be known."
 ```
 
 ```
@@ -125,12 +102,12 @@ select * from quotes;
 ```
 
 ```
-+----+---------------------+----------------------+-------------------------------------------------------------------------------------+
-| id | author              | source               | content                                                                             |
-+----+---------------------+----------------------+-------------------------------------------------------------------------------------+
-|  1 | Charlotte Brontë    | Jane Eyre            | I would always rather be happy than dignified.                                      |
-|  2 | Fyodor Dostoevsky   | Crime and Punishment | Pain and suffering are always inevitable for a large intelligence and a deep heart. |
-|  3 | Miguel de Cervantes | Don Quixote          | Somewhere, something incredible is waiting to be known.                             |
-+----+---------------------+----------------------+-------------------------------------------------------------------------------------+
-3 rows in set (0,004 sec)
++----+-------------------------------------------------------------------------------------+
+| id | content                                                                             |
++----+-------------------------------------------------------------------------------------+
+|  1 | I would always rather be happy than dignified.                                      |
+|  2 | Pain and suffering are always inevitable for a large intelligence and a deep heart. |
+|  3 | Somewhere, something incredible is waiting to be known.                             |
++----+-------------------------------------------------------------------------------------+
+3 rows in set (0,053 sec)
 ```
