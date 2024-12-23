@@ -1,24 +1,22 @@
 <?php
-// update_quote.php <id> <content> <author> <source>
+// update_quote.php <id> <content>
+
+declare(strict_types=1);
 
 require_once __DIR__ . "/../../bootstrap.php";
 
 $id = $argv[1];
 $content = $argv[2];
-$author = $argv[3];
-$source = $argv[4];
 
 $quote = $entityManager->find('Quote', $id);
 
 if ($quote === null) {
-    echo "Quote $id does not exist.\n";
+    print("Quote $id does not exist.\n");
     exit(1);
 }
 
 $quote->setContent($content);
-$quote->setAuthor($author);
-$quote->setSource($source);
 
 $entityManager->flush();
 
-echo "Updated Quote with ID " . $id . "\n";
+print("Updated Quote with ID " . $id . "\n");
