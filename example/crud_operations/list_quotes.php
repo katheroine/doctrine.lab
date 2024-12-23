@@ -1,18 +1,18 @@
 <?php
 // list_quotes.php
 
+declare(strict_types=1);
+
 require_once __DIR__ . "/../../bootstrap.php";
 
 $quoteRepository = $entityManager->getRepository('Quote');
 $quotes = $quoteRepository->findAll();
 
-$listPattern = "✤ %s\n -- %s, \"%s\"\n\n";
+$listPattern = "✤ \"%s\"\n\n";
 
 foreach ($quotes as $quote) {
-    echo sprintf(
+    printf(
         $listPattern,
-        $quote->getContent(),
-        $quote->getAuthor(),
-        $quote->getSource()
+        $quote->getContent()
     );
 }

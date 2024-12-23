@@ -6,10 +6,12 @@
 
 There must be defined appropriate accessors in the `Quote` class to make the possibility of reading `Quote` field values.
 
-**`src/Quote.php`**
+[**`src/Quote.php`**](../../entities/crud_operations/reading_records/Quote.php)
 
 ```php
 <?php
+
+declare(strict_types=1);
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -21,10 +23,6 @@ class Quote
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue]
     private ?int $id = null;
-    #[ORM\Column(type: 'string')]
-    private ?string $author = null;
-    #[ORM\Column(type: 'string')]
-    private ?string $source = null;
     #[ORM\Column(type: 'string')]
     private string $content;
 
@@ -53,67 +51,31 @@ class Quote
     {
         return $this->content;
     }
-
-    /**
-     * @param string $author
-     *
-     * @return void
-     */
-    public function setAuthor(string $author)
-    {
-        $this->author = $author;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAuthor()
-    {
-        return $this->author;
-    }
-
-    /**
-     * @param string $source
-     *
-     * @return void
-     */
-    public function setSource(string $source)
-    {
-        $this->source = $source;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSource()
-    {
-        return $this->source;
-    }
 }
 
 ```
 
 #### Reading all the entities
 
-**`example/crud_operations/list_quotes.php`**
+[**`example/crud_operations/list_quotes.php`**](../../example/crud_operations/list_quotes.php)
 
 ```php
 <?php
 // list_quotes.php
+declare(strict_types=1);
+
 
 require_once __DIR__ . "/../../bootstrap.php";
 
 $quoteRepository = $entityManager->getRepository('Quote');
 $quotes = $quoteRepository->findAll();
 
-$listPattern = "✤ %s\n -- %s, \"%s\"\n\n";
+$listPattern = "✤ \"%s\"\n\n";
 
 foreach ($quotes as $quote) {
-    echo sprintf(
+    printf(
         $listPattern,
-        $quote->getContent(),
-        $quote->getAuthor(),
-        $quote->getSource()
+        $quote->getContent()
     );
 }
 
@@ -126,42 +88,40 @@ php example/crud_operations/list_quotes.php
 ```
 
 ```
-✤ I would always rather be happy than dignified.
- -- Charlotte Brontë, "Jane Eyre"
+✤ "I would always rather be happy than dignified."
 
-✤ Pain and suffering are always inevitable for a large intelligence and a deep heart.
- -- Fyodor Dostoevsky, "Crime and Punishment"
+✤ "Pain and suffering are always inevitable for a large intelligence and a deep heart."
 
-✤ Somewhere, something incredible is waiting to be known.
- -- Miguel de Cervantes, "Don Quixote"
+✤ "Somewhere, something incredible is waiting to be known."
+
 ```
 
 #### Reading a single entity
 
-**`example/crud_operations/show_quote.php`**
+[**`example/crud_operations/show_quote.php`**](../../example/crud_operations/show_quote.php)
 
 ```php
 <?php
 // show_query.php <id>
 
-require_once __DIR__ . "/../bootstrap.php";
+declare(strict_types=1);
+
+require_once __DIR__ . "/../../bootstrap.php";
 
 $id = $argv[1];
 
 $quote = $entityManager->find('Quote', $id);
 
 if ($quote === null) {
-    echo ("No Quote found.\n");
+    print("No Quote found.\n");
     exit(1);
 }
 
-$showPattern = "%s\n -- %s, \"%s\"\n";
+$showPattern = "\"%s\"\n";
 
-echo sprintf(
+printf(
     $showPattern,
-    $quote->getContent(),
-    $quote->getAuthor(),
-    $quote->getSource()
+    $quote->getContent()
 );
 
 ```
@@ -173,8 +133,7 @@ php example/crud_operations/show_quote.php 1
 ```
 
 ```
-I would always rather be happy than dignified.
- -- Charlotte Brontë, "Jane Eyre"
+"I would always rather be happy than dignified."
 ```
 
 ```bash
@@ -182,8 +141,7 @@ php example/crud_operations/show_quote.php 2
 ```
 
 ```
-Pain and suffering are always inevitable for a large intelligence and a deep heart.
- -- Fyodor Dostoevsky, "Crime and Punishment"
+"Pain and suffering are always inevitable for a large intelligence and a deep heart."
 ```
 
 ```bash
@@ -191,8 +149,7 @@ php example/crud_operations/show_quote.php 3
 ```
 
 ```
-Somewhere, something incredible is waiting to be known.
- -- Miguel de Cervantes, "Don Quixote"
+"Somewhere, something incredible is waiting to be known."
 ```
 
 ```bash
@@ -200,5 +157,5 @@ php example/crud_operations/show_quote.php 4
 ```
 
 ```
-No quote found.
+No Quote found.
 ```
