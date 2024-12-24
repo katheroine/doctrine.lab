@@ -4,36 +4,12 @@
 
 ### One to one: Unidirectional
 
-**`src/AuthorAutopresentation.php`**
+[**`src\Author`**](../../entities/associations/one_to_one/bidirectional/Author.php)
 
 ```php
 <?php
 
-use Doctrine\ORM\Mapping as ORM;
-
-#[ORM\Entity]
-#[ORM\Table(name: 'author_autopresentations')]
-class AuthorAutopresentation
-{
-    #[ORM\Id]
-    #[ORM\Column(type: 'integer')]
-    #[ORM\GeneratedValue]
-    private ?int $id = null;
-    #[ORM\Column(type: 'string')]
-    private string $bio;
-    /**
-     * @var Author
-     */
-    #[ORM\OneToOne(targetEntity: Author::class, inversedBy: 'autopresentation')]
-    private Author $author;
-}
-
-```
-
-**`src\Author`**
-
-```php
-<?php
+declare(strict_types=1);
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -41,14 +17,46 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'authors')]
 class Author
 {
-    //...
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
+    private ?int $id = null;
+    #[ORM\Column(type: 'string')]
+    private string $penname;
     /**
-     * @var AuthorAutopresentation
+     * @var Autopromotion
      */
-    #[ORM\OneToOne(targetEntity: AuthorAutopresentation::class, mappedBy: 'author')]
-    private ?AuthorAutopresentation $autopresentation = null;
+    #[ORM\OneToOne(targetEntity: Autopromotion::class, mappedBy: 'author')]
+    private ?Autopromotion $autopromotion = null;
+}
 
-    // ...
+```
+
+[**`src/Autopromotion.php`**](../../entities/associations/one_to_one/bidirectional/Autopromotion.php)
+
+```php
+<?php
+
+declare(strict_types=1);
+
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity]
+#[ORM\Table(name: 'autopromotions')]
+class Autopromotion
+{
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
+    private ?int $id = null;
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $bio = null;
+    /**
+     * @var Author
+     */
+    #[ORM\OneToOne(targetEntity: Author::class, inversedBy: 'autopromotion')]
+    #[ORM\JoinColumn(name: "author_id", referencedColumnName: "id", nullable: false)]
+    private Author $author;
 }
 
 ```
@@ -60,12 +68,13 @@ php bin/doctrine orm:schema-tool:update --force --dump-sql
 ```
 
 ```
-CREATE TABLE author_autopresentations (id INT AUTO_INCREMENT NOT NULL, bio VARCHAR(255) NOT NULL, author_id INT DEFAULT NULL, UNIQUE INDEX UNIQ_D1828E57F675F31B (author_id), PRIMARY KEY(id));
-ALTER TABLE author_autopresentations ADD CONSTRAINT FK_D1828E57F675F31B FOREIGN KEY (author_id) REFERENCES authors (id);
+CREATE TABLE autopromotions (id INT AUTO_INCREMENT NOT NULL, bio VARCHAR(255) DEFAULT NULL, author_id INT NOT NULL, UNIQUE INDEX UNIQ_8A435838F675F31B (author_id), PRIMARY KEY(id));
+CREATE TABLE authors (id INT AUTO_INCREMENT NOT NULL, penname VARCHAR(255) NOT NULL, PRIMARY KEY(id));
+ALTER TABLE autopromotions ADD CONSTRAINT FK_8A435838F675F31B FOREIGN KEY (author_id) REFERENCES authors (id);
 
  Updating database schema...
 
-     2 queries were executed
+     3 queries were executed
 
 
  [OK] Database schema updated successfully!
@@ -80,15 +89,14 @@ show tables;
 ```
 
 ```
-+--------------------------+
-| Tables_in_doctrinelab    |
-+--------------------------+
-| author_autopresentations |
-| authors                  |
-| personal_details         |
-| quotes                   |
-+--------------------------+
-4 rows in set (0,001 sec)
++-----------------------+
+| Tables_in_doctrinelab |
++-----------------------+
+| authors               |
+| autopromotions        |
+| quotes                |
++-----------------------+
+3 rows in set (0,001 sec)
 ```
 
 ```sql
@@ -96,19 +104,18 @@ describe authors;
 ```
 
 ```
-+---------------------+--------------+------+-----+---------+----------------+
-| Field               | Type         | Null | Key | Default | Extra          |
-+---------------------+--------------+------+-----+---------+----------------+
-| id                  | int(11)      | NO   | PRI | NULL    | auto_increment |
-| penname             | varchar(255) | NO   |     | NULL    |                |
-| personal_details_id | int(11)      | YES  | UNI | NULL    |                |
-+---------------------+--------------+------+-----+---------+----------------+
-3 rows in set (0,002 sec)
++---------+--------------+------+-----+---------+----------------+
+| Field   | Type         | Null | Key | Default | Extra          |
++---------+--------------+------+-----+---------+----------------+
+| id      | int(11)      | NO   | PRI | NULL    | auto_increment |
+| penname | varchar(255) | NO   |     | NULL    |                |
++---------+--------------+------+-----+---------+----------------+
+2 rows in set (0,002 sec)
 ```
 
 
 ```sql
-describe author_autopresentations;
+describe autopromotions;
 ```
 
 ```
@@ -116,23 +123,60 @@ describe author_autopresentations;
 | Field     | Type         | Null | Key | Default | Extra          |
 +-----------+--------------+------+-----+---------+----------------+
 | id        | int(11)      | NO   | PRI | NULL    | auto_increment |
-| bio       | varchar(255) | NO   |     | NULL    |                |
-| author_id | int(11)      | YES  | UNI | NULL    |                |
+| bio       | varchar(255) | YES  |     | NULL    |                |
+| author_id | int(11)      | NO   | UNI | NULL    |                |
 +-----------+--------------+------+-----+---------+----------------+
-3 rows in set (0,002 sec)
-
+3 rows in set (0,003 sec)
 ```
 
-**`src/AuthorAutopresentation.php`**
+[**`src\Author`**](../../entities/associations/one_to_one/bidirectional/Author.php)
 
 ```php
 <?php
 
+declare(strict_types=1);
+
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'author_autopresentations')]
-class AuthorAutopresentation
+#[ORM\Table(name: 'authors')]
+class Author
+{
+    // ...
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $penname
+     *
+     * @return void
+     */
+    public function setPenname(string $penname)
+    {
+        $this->penname = $penname;
+    }
+}
+
+```
+
+[**`src/Autopromotion.php`**](../../entities/associations/one_to_one/bidirectional/Autopromotion.php)
+
+```php
+<?php
+
+declare(strict_types=1);
+
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity]
+#[ORM\Table(name: 'autopromotions')]
+class Autopromotion
 {
     // ...
 
@@ -164,104 +208,84 @@ class AuthorAutopresentation
         $this->author = $author;
     }
 }
+
 ```
 
-**`php example/associations/one_to_one_bidirectional_create.php`**
+[**`example/associations/one_to_one/bidirectional/create_author_with_autopromotion.php`**](../../example/associations/one_to_one/bidirectional/create_author_with_autopresentation.php)
 
 ```php
 <?php
-// one_to_one_bidirectional_create.php <penname> <first_name> <last_name> <bio>
+<?php
+// create_author_with_autopromotion.php <penname> <bio>
 
-require_once __DIR__ . "/../../bootstrap.php";
+declare(strict_types=1);
+
+require_once __DIR__ . "/../../../../bootstrap.php";
 
 $penname = $argv[1];
-$firstName = $argv[2];
-$lastName = $argv[3];
-$bio = $argv[4];
-
-$personalDetails = new PersonalDetails();
-$personalDetails->setFirstName($firstName);
-$personalDetails->setLastName($lastName);
+$bio = $argv[2];
 
 $author = new Author();
 $author->setPenname($penname);
-$author->setPersonalDetails($personalDetails);
 
-$autopresentation = new AuthorAutopresentation();
-$autopresentation->setBio($bio);
-$autopresentation->setAuthor($author);
+$autopromotion = new Autopromotion();
+$autopromotion->setBio($bio);
+$autopromotion->setAuthor($author);
 
-$entityManager->persist($personalDetails);
 $entityManager->persist($author);
-$entityManager->persist($autopresentation);
+$entityManager->persist($autopromotion);
 $entityManager->flush();
 
-echo "Created PersonalDetails with ID " . $personalDetails->getId() . "\n";
-echo "Created Author with ID " . $author->getId() . "\n";
-echo "Created AuthorAutopresentation with ID " . $autopresentation->getId() . "\n";
+print("Created Author with ID " . $author->getId() . "\n");
+print("Created Autopromotion with ID " . $autopromotion->getId() . "\n");
 
 ```
 
 **Console**
 
 ```bash
-php example/associations/one_to_one_bidirectional_create.php "Geek Duck" "Jasmine" "Argenta" "I am a compulsive tutorial creator."
+php example/associations/one_to_one/bidirectional/create_author_with_autopromotion.php "Anne Maroon" "Romantic gardens of words."
 ```
 
 ```
-Created PersonalDetails with ID 2
-Created Author with ID 2
-Created AuthorAutopresentation with ID 1
+Created Author with ID 1
+Created Autopromotion with ID 1
 ```
 
 **Database**
-
-```sql
-select * from personal_details;
-```
-
-```
-+----+------------+-----------+
-| id | first_name | last_name |
-+----+------------+-----------+
-|  1 | Aleksander | Głowacki  |
-|  2 | Jasmine    | Argenta   |
-+----+------------+-----------+
-2 rows in set (0,004 sec)
-```
 
 ```sql
 select * from authors;
 ```
 
 ```
-+----+----------------+---------------------+
-| id | penname        | personal_details_id |
-+----+----------------+---------------------+
-|  1 | Bolesław Prus  |                   1 |
-|  2 | Geek Duck      |                   2 |
-|  3 | Nerdine        |                   3 |
-+----+----------------+---------------------+
-3 rows in set (0,001 sec)
++----+-------------+
+| id | penname     |
++----+-------------+
+|  1 | Anne Maroon |
++----+-------------+
+1 row in set (0,017 sec)
 ```
 
 ```sql
-select * from author_autopresentations;
+select * from autopromotions;
 ```
 
 ```
-+----+----------------------------------------+-----------+
-| id | bio                                    | author_id |
-+----+----------------------------------------+-----------+
-|  1 | I am a compulsive tutorial creator.    |         3 |
-+----+----------------------------------------+-----------+
-4 rows in set (0,000 sec)
++----+----------------------------+-----------+
+| id | bio                        | author_id |
++----+----------------------------+-----------+
+|  1 | Romantic gardens of words. |         1 |
++----+----------------------------+-----------+
+1 row in set (0,000 sec)
 ```
 
-**`src\Author`**
+[**`src\Author`**](../../entities/associations/one_to_one/bidirectional/Author.php)
 
 ```php
 <?php
+
+declare(strict_types=1);
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -272,116 +296,140 @@ class Author
     // ...
 
     /**
-     * @return AuthorAutopresentation
+     * @return string
      */
-    public function getAutopresentation()
+    public function getPenname(): string
     {
-        return $this->autopresentation;
+        return $this->penname;
+    }
+
+    /**
+     * @return Autopromotion
+     */
+    public function getAutopromotion(): Autopromotion
+    {
+        return $this->autopromotion;
     }
 }
 
 ```
 
-**`src/AuthorAutopresentation.php`**
+[**`src/Autopromotion.php`**](../../entities/associations/one_to_one/bidirectional/Autopromotion.php)
 
 ```php
 <?php
+
+declare(strict_types=1);
 
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'author_autopresentations')]
-class AuthorAutopresentation
+#[ORM\Table(name: 'autopromotions')]
+class Autopromotion
 {
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
+    private ?int $id = null;
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $bio = null;
+    /**
+     * @var Author
+     */
+    #[ORM\OneToOne(targetEntity: Author::class, inversedBy: 'autopromotion')]
+    #[ORM\JoinColumn(name: "author_id", referencedColumnName: "id", nullable: false)]
+    private Author $author;
+
     // ...
 
     /**
-     * @return Author
+     * @return string
      */
-    public function getAuthor()
+    public function getBio()
     {
-        return $this->author;
+        return $this->bio;
     }
+
+    // ...
 }
 
 ```
 
-**`php example/associations/one_to_one_bidirectional_read.php`**
+[**`example/associations/one_to_one/bidirectional/read_author_with_autopromotion.php`**](../../example/associations/one_to_one/bidirectional/read_author_with_autopresentation.php)
 
 ```php
 <?php
-// one_to_one_bidirectional_read.php <entity> <id>
+// read_author_with_autopromotion.php <id>
 
-require_once __DIR__ . "/../../bootstrap.php";
+declare(strict_types=1);
 
-$entity = strtolower($argv[1]);
-$id = $argv[2];
+require_once __DIR__ . "/../../../../bootstrap.php";
 
-$showPattern = "%s (%s %s)\n%s\n\n";
+$id = $argv[1];
 
-switch($entity) {
-    case 'author':
-        readAuthor($id, $entityManager, $showPattern);
-        break;
-    case 'autopresentation':
-        readAutopresentation($id, $entityManager, $showPattern);
-        break;
+$author = $entityManager->find('Author', $id);
+
+if ($author === null) {
+    print("No Author found.\n");
+    exit(1);
 }
 
-function readAuthor(int $id, $entityManager, $showPattern)
-{
-    $author = $entityManager->find('Author', $id);
+$showPattern = "%s\n%s\n";
 
-    if ($author === null) {
-        echo ("No Author found.\n");
-        exit(1);
-    }
-
-    echo sprintf(
-        $showPattern,
-        $author->getPenname(),
-        $author->getPersonalDetails()->getFirstName(),
-        $author->getPersonalDetails()->getLastName(),
-        $author->getAutopresentation()?->getBio()
-    );
-}
-
-function readAutopresentation(int $id, $entityManager, $showPattern)
-{
-    $autopresentation = $entityManager->find('AuthorAutopresentation', $id);
-
-    if ($autopresentation === null) {
-        echo ("No Autopresentation found.\n");
-        exit(1);
-    }
-
-    echo sprintf(
-        $showPattern,
-        $autopresentation->getAuthor()->getPenname(),
-        $autopresentation->getAuthor()->getPersonalDetails()->getFirstName(),
-        $autopresentation->getAuthor()->getPersonalDetails()->getLastName(),
-        $autopresentation->getBio()
-    );
-}
+printf(
+    $showPattern,
+    $author->getPenname(),
+    $author->getAutopromotion()?->getBio()
+);
 
 ```
 
 **Console**
 
 ```bash
-php example/associations/one_to_one_bidirectional_read.php author 2
+php example/associations/one_to_one/bidirectional/read_author_with_autopromotion.php 1
 ```
 
 ```
-Jasmine Argenta (Nerdine)
-I am a compulsive tutorial creator.
+Anne Maroon
+Romantic gardens of words.
 ```
+
+[**`example/associations/one_to_one/bidirectional/read_autopromotion_with_author.php`**](../../example/associations/one_to_one/bidirectional/read_autopromotion_with_author.php)
+
+```php
+<?php
+// read_autopromotion_with_author.php <id>
+
+declare(strict_types=1);
+
+require_once __DIR__ . "/../../../../bootstrap.php";
+
+$id = $argv[1];
+
+$autopromotion = $entityManager->find('Autopromotion', $id);
+
+if ($autopromotion === null) {
+    print("No Autopromotion found.\n");
+    exit(1);
+}
+
+$showPattern = "%s\n%s\n";
+
+printf(
+    $showPattern,
+    $autopromotion->getAuthor()->getPenname(),
+    $autopromotion->getBio()
+);
+```
+
+**Console**
 
 ```bash
-php example/associations/one_to_one_bidirectional_read.php autopresentation 1
+php example/associations/one_to_one/bidirectional/read_autopromotion_with_author.php 1
 ```
 
 ```
-Jasmine Argenta (Geek Duck)
-I am a compulsive tutorial creator.
+Anne Maroon
+Romantic gardens of words.
 ```

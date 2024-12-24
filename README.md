@@ -11,8 +11,8 @@ Laboratory of Doctrine.
     4. [Deleting records](doc/crud_operations/deleting_records.md)
 4. Associations
     1. One to one
-        1. [Unidirectional](doc/associations/one_to_one_unidirectional.md)
-        2. [Bidirectional](doc/associations/one_to_one_bidirectional.md)
+        1. [Bidirectional](doc/associations/one_to_one_bidirectional.md)
+        2. [Unidirectional](doc/associations/one_to_one_unidirectional.md)
     2. One to many
         1. [Unidirectional](doc/associations/one_to_many_unidirectional.md)
         2. [Bidirectional](doc/associations/one_to_many_bidirectional.md)
