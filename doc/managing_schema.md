@@ -116,6 +116,20 @@ show tables;
 1 row in set (0,001 sec)
 ```
 
+```sql
+describe quotes;
+```
+
+```
++---------+--------------+------+-----+---------+----------------+
+| Field   | Type         | Null | Key | Default | Extra          |
++---------+--------------+------+-----+---------+----------------+
+| id      | int(11)      | NO   | PRI | NULL    | auto_increment |
+| content | varchar(255) | NO   |     | NULL    |                |
++---------+--------------+------+-----+---------+----------------+
+2 rows in set (0,005 sec)
+```
+
 ### Deleting schema
 
 **Console**
