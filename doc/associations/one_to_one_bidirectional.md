@@ -1,6 +1,6 @@
 [⌂ Home](../../README.md)
-[▲ Previous: One to one: Unidirectional](../associations/one_to_one_unidirectional.md)
-[▼ Next: One to many: Unidirectional](one_to_many_unidirectional.md)
+[▲ Previous: Deleting records](../crud_operations/deleting_records.md)
+[▼ Next: One to one: Unidirectional](one_to_one_unidirectional.md)
 
 ### One to one: Unidirectional
 
@@ -214,7 +214,6 @@ class Autopromotion
 [**`example/associations/one_to_one/bidirectional/create_author_with_autopromotion.php`**](../../example/associations/one_to_one/bidirectional/create_author_with_autopresentation.php)
 
 ```php
-<?php
 <?php
 // create_author_with_autopromotion.php <penname> <bio>
 

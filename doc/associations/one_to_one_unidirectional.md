@@ -1,13 +1,47 @@
 [⌂ Home](../../README.md)
-[▲ Previous: Deleting records](../crud_operations/deleting_records.md)
-[▼ Next: One to one: Bidirectional](../associations/one_to_one_bidirectional.md)
+[▲ Previous: One to one: Unidirectional](../associations/one_to_one_unidirectional.md)
+[▼ Next: One to many: Bidirectional](one_to_many_bidirectional.md)
 
 ### One to one: Unidirectional
 
-**`src/PersonalDetails.php`**
+[**`src\Author.php`**](../../entities/associations/one_to_one/unidirectional/Author.php)
 
 ```php
 <?php
+
+declare(strict_types=1);
+
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity]
+#[ORM\Table(name: 'authors')]
+class Author
+{
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
+    private ?int $id = null;
+    #[ORM\Column(type: 'string')]
+    private string $penname;
+    // ...
+    /**
+     * @var PersonalDetails
+     */
+    #[ORM\OneToOne(targetEntity: PersonalDetails::class)]
+    #[ORM\JoinColumn(name: 'personal_details_id', referencedColumnName: 'id')]
+    private ?PersonalDetails $personalDetails;
+
+    // ...
+}
+
+```
+
+[**`src/PersonalDetails.php`**](../../entities/associations/one_to_one/unidirectional/PersonalDetails.php)
+
+```php
+<?php
+
+declare(strict_types=1);
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -24,34 +58,6 @@ class PersonalDetails
     #[ORM\Column(type: 'string', name: 'last_name')]
     private string $lastName;
 }
-
-```
-
-**`src\Author.php`**
-
-```php
-<?php
-
-use Doctrine\ORM\Mapping as ORM;
-
-#[ORM\Entity]
-#[ORM\Table(name: 'authors')]
-class Author
-{
-    #[ORM\Id]
-    #[ORM\Column(type: 'integer')]
-    #[ORM\GeneratedValue]
-    private ?int $id = null;
-    #[ORM\Column(type: 'string')]
-    private string $penname;
-    /**
-     * @var PersonalDetails
-     */
-    #[ORM\OneToOne(targetEntity: PersonalDetails::class)]
-    #[ORM\JoinColumn(name: 'personal_details_id', referencedColumnName: 'id')]
-    private PersonalDetails $personalDetails;
-}
-
 ```
 
 **Console**
@@ -61,13 +67,14 @@ php bin/doctrine orm:schema-tool:update --force --dump-sql
 ```
 
 ```
-CREATE TABLE authors (id INT AUTO_INCREMENT NOT NULL, penname VARCHAR(255) NOT NULL, personal_details_id INT DEFAULT NULL, UNIQUE INDEX UNIQ_8E0C2A51FBCAA082 (personal_details_id), PRIMARY KEY(id));
-CREATE TABLE personal_details (id INT AUTO_INCREMENT NOT NULL, firstName VARCHAR(255) NOT NULL, lastName VARCHAR(255) NOT NULL, PRIMARY KEY(id));
+CREATE TABLE personal_details (id INT AUTO_INCREMENT NOT NULL, first_name VARCHAR(255) NOT NULL, last_name VARCHAR(255) NOT NULL, PRIMARY KEY(id));
+ALTER TABLE authors ADD personal_details_id INT DEFAULT NULL;
 ALTER TABLE authors ADD CONSTRAINT FK_8E0C2A51FBCAA082 FOREIGN KEY (personal_details_id) REFERENCES personal_details (id);
+CREATE UNIQUE INDEX UNIQ_8E0C2A51FBCAA082 ON authors (personal_details_id);
 
  Updating database schema...
 
-     3 queries were executed
+     4 queries were executed
 
 
  [OK] Database schema updated successfully!
@@ -86,25 +93,11 @@ show tables;
 | Tables_in_doctrinelab |
 +-----------------------+
 | authors               |
+| autopromotions        |
 | personal_details      |
 | quotes                |
 +-----------------------+
-3 rows in set (0,001 sec)
-```
-
-```sql
-describe personal_details;
-```
-
-```
-+------------+--------------+------+-----+---------+----------------+
-| Field      | Type         | Null | Key | Default | Extra          |
-+------------+--------------+------+-----+---------+----------------+
-| id         | int(11)      | NO   | PRI | NULL    | auto_increment |
-| first_name | varchar(255) | NO   |     | NULL    |                |
-| last_name  | varchar(255) | NO   |     | NULL    |                |
-+------------+--------------+------+-----+---------+----------------+
-3 rows in set (0,011 sec)
+4 rows in set (0,001 sec)S
 ```
 
 ```sql
@@ -119,13 +112,58 @@ describe authors;
 | penname             | varchar(255) | NO   |     | NULL    |                |
 | personal_details_id | int(11)      | YES  | UNI | NULL    |                |
 +---------------------+--------------+------+-----+---------+----------------+
+3 rows in set (0,008 sec)
+```
+
+```sql
+describe personal_details;
+```
+
+```
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| id         | int(11)      | NO   | PRI | NULL    | auto_increment |
+| first_name | varchar(255) | NO   |     | NULL    |                |
+| last_name  | varchar(255) | NO   |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
 3 rows in set (0,003 sec)
 ```
 
-**`src/PersonalDetails.php`**
+[**`src\Author.php`**](../../entities/associations/one_to_one/unidirectional/Author.php)
 
 ```php
 <?php
+
+declare(strict_types=1);
+
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity]
+#[ORM\Table(name: 'authors')]
+class Author
+{
+    // ...
+
+    /**
+     * @param PersonalDetails $personalDetails
+     *
+     * @return void
+     */
+    public function setPersonalDetails(PersonalDetails $personalDetails)
+    {
+        $this->personalDetails = $personalDetails;
+    }
+}
+
+```
+
+[**`src/PersonalDetails.php`**](../../entities/associations/one_to_one/unidirectional/PersonalDetails.php)
+
+```php
+<?php
+
+declare(strict_types=1);
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -166,57 +204,15 @@ class PersonalDetails
 
 ```
 
-**`src\Author.php`**
+[**`example/associations/one_to_one/unidirectional/create_author_with_personal_details.php`**](../../example/associations/one_to_one/unidirectional/create_author_with_personal_details.php)
 
 ```php
 <?php
+// create_author_with_personal_details.php <penname> <first_name> <last_name>
 
-use Doctrine\ORM\Mapping as ORM;
+declare(strict_types=1);
 
-#[ORM\Entity]
-#[ORM\Table(name: 'authors')]
-class Author
-{
-    // ...
-
-    /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param string $penname
-     *
-     * @return void
-     */
-    public function setPenname(string $penname)
-    {
-        $this->penname = $penname;
-    }
-
-    /**
-     * @param PersonalDetails $personalDetails
-     *
-     * @return void
-     */
-    public function setPersonalDetails(PersonalDetails $personalDetails)
-    {
-        $this->personalDetails = $personalDetails;
-    }
-}
-
-```
-
-**`example/associations/one_to_one_unidirectional_create.php`**
-
-```php
-<?php
-// one_to_one_unidirectional_create.php <penname> <first_name> <last_name>
-
-require_once __DIR__ . "/../../bootstrap.php";
+require_once __DIR__ . "/../../../../bootstrap.php";
 
 $penname = $argv[1];
 $firstName = $argv[2];
@@ -234,20 +230,20 @@ $entityManager->persist($personalDetails);
 $entityManager->persist($author);
 $entityManager->flush();
 
-echo "Created PersonalDetails with ID " . $personalDetails->getId() . "\n";
-echo "Created Author with ID " . $author->getId() . "\n";
+print("Created Author with ID " . $author->getId() . "\n");
+print("Created Personal Details with ID " . $personalDetails->getId() . "\n");
 
 ```
 
 **Console**
 
 ```bash
-php example/associations/one_to_one_unidirectional_create.php "Bolesław Prus" "Aleksander" "Głowacki"
+php example/associations/one_to_one/unidirectional/create_author_with_personal_details.php "Bolesław Prus" "Aleksander" "Głowacki"
 ```
 
 ```
-Created PersonalDetails with ID 1
-Created Author with ID 1
+Created Author with ID 2
+Created Personal Details with ID 1
 ```
 
 **Database**
@@ -273,15 +269,45 @@ select * from authors;
 +----+----------------+---------------------+
 | id | penname        | personal_details_id |
 +----+----------------+---------------------+
-|  1 | Bolesław Prus  |                   1 |
+|  1 | Anne Maroon    |                NULL |
+|  2 | Bolesław Prus  |                   1 |
 +----+----------------+---------------------+
-1 row in set (0,001 sec)
+2 rows in set (0,001 sec)
+
 ```
 
-**`src/PersonalDetails.php`**
+[**`src\Author.php`**](../../entities/associations/one_to_one/unidirectional/Author.php)
 
 ```php
 <?php
+
+declare(strict_types=1);
+
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity]
+#[ORM\Table(name: 'authors')]
+class Author
+{
+    // ...
+
+    /**
+     * @return PersonalDetails
+     */
+    public function getPersonalDetails(): PersonalDetails
+    {
+        return $this->personalDetails;
+    }
+}
+
+```
+
+[**`src/PersonalDetails.php`**](../../entities/associations/one_to_one/unidirectional/PersonalDetails.php)
+
+```php
+<?php
+
+declare(strict_types=1);
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -312,60 +338,28 @@ class PersonalDetails
 
 ```
 
-**`src\Author.php`**
+[**`example/associations/one_to_one/unidirectional/read_author_with_personal_details.php`**](../../example/associations/one_to_one/unidirectional/read_author_with_personal_details.php)
 
 ```php
 <?php
+// read_author_with_personal_details.php <id>
 
-use Doctrine\ORM\Mapping as ORM;
+declare(strict_types=1);
 
-#[ORM\Entity]
-#[ORM\Table(name: 'authors')]
-class Author
-{
-    // ...
-
-    /**
-     * @return string
-     */
-    public function getPenname()
-    {
-        return $this->penname;
-    }
-
-    // ...
-
-    /**
-     * @return PersonalDetails
-     */
-    public function getPersonalDetails()
-    {
-        return $this->personalDetails;
-    }
-}
-
-```
-
-**`example/associations/one_to_one_unidirectional_read.php`**
-
-```php
-<?php
-// one_to_one_unidirectional_read.php <id>
-
-require_once __DIR__ . "/../../bootstrap.php";
+require_once __DIR__ . "/../../../../bootstrap.php";
 
 $id = $argv[1];
 
 $author = $entityManager->find('Author', $id);
 
 if ($author === null) {
-    echo ("No Author found.\n");
+    print("No Author found.\n");
     exit(1);
 }
 
 $showPattern = "%s (%s %s)\n";
 
-echo sprintf(
+printf(
     $showPattern,
     $author->getPenname(),
     $author->getPersonalDetails()->getFirstName(),
@@ -375,7 +369,7 @@ echo sprintf(
 ```
 
 ```bash
-php example/associations/one_to_one_unidirectional_read.php 1
+php example/associations/one_to_one/unidirectional/read_author_with_personal_details.php 2
 ```
 
 ```

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -15,16 +13,16 @@ class Author
     #[ORM\Column(type: 'string')]
     private string $penname;
     /**
-     * @var Autopromotion
-     */
-    #[ORM\OneToOne(targetEntity: Autopromotion::class, mappedBy: 'author')]
-    private ?Autopromotion $autopromotion = null;
-    /**
      * @var PersonalDetails
      */
     #[ORM\OneToOne(targetEntity: PersonalDetails::class)]
     #[ORM\JoinColumn(name: 'personal_details_id', referencedColumnName: 'id')]
-    private ?PersonalDetails $personalDetails;
+    private PersonalDetails $personalDetails;
+    /**
+     * @var AuthorAutopresentation
+     */
+    #[ORM\OneToOne(targetEntity: AuthorAutopresentation::class, mappedBy: 'author')]
+    private ?AuthorAutopresentation $autopresentation = null;
 
     /**
      * @return int
@@ -47,17 +45,9 @@ class Author
     /**
      * @return string
      */
-    public function getPenname(): string
+    public function getPenname()
     {
         return $this->penname;
-    }
-
-    /**
-     * @return Autopromotion
-     */
-    public function getAutopromotion(): Autopromotion
-    {
-        return $this->autopromotion;
     }
 
     /**
@@ -73,8 +63,16 @@ class Author
     /**
      * @return PersonalDetails
      */
-    public function getPersonalDetails(): PersonalDetails
+    public function getPersonalDetails()
     {
         return $this->personalDetails;
+    }
+
+    /**
+     * @return AuthorAutopresentation
+     */
+    public function getAutopresentation()
+    {
+        return $this->autopresentation;
     }
 }
