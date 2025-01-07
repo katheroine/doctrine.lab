@@ -1,38 +1,18 @@
 [⌂ Home](../../README.md)
-[▲ Previous: One to one: Bidirectional](../associations/one_to_one_bidirectional.md)
-[▼ Next: One to many: Bidirectional](../associations/one_to_many_bidirectional.md)
+[▲ Previous: One to many: Bidirectional](../associations/one_to_many_bidirectional.md)
 
-### One to many: Bidirectional
+### One to many: Unidirectional
 
-**`src/Email.php`**
+*A unidirectional one-to-many association can be mapped through a join table. From Doctrine's point of view, it is simply mapped as a unidirectional many-to-many whereby a unique constraint on one of the join columns enforces the one-to-many cardinality.*
 
-```php
-<?php
+-- [Doctrine Tutorial](https://www.doctrine-project.org/projects/doctrine-orm/en/3.3/reference/association-mapping.html#one-to-many-unidirectional-with-join-table)
 
-use Doctrine\ORM\Mapping as ORM;
-
-#[ORM\Entity]
-#[ORM\Table(name: 'emails')]
-class Email
-{
-    #[ORM\Id]
-    #[ORM\Column(type: 'integer')]
-    #[ORM\GeneratedValue]
-    private ?int $id = null;
-    #[ORM\Column(type: 'string', name: 'local_part')]
-    private $localPart;
-    #[ORM\Column(type: 'string')]
-    private $domain;
-    #[ORM\Column(type: 'bool', name: 'is_login')]
-    private $isLogin;
-}
-
-```
-
-**`src/PersonalDetails.php`**
+[**`src/PersonalDetails.php`**](../../entities/associations/one_to_many/unidirectional/PersonalDetails.php)
 
 ```php
 <?php
+
+declare(strict_types=1);
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
@@ -56,6 +36,31 @@ class PersonalDetails
 
 ```
 
+[**`src/Email.php`**](../../entities/associations/one_to_many/unidirectional/Email.php)
+
+```php
+<?php
+
+declare(strict_types=1);
+
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity]
+#[ORM\Table(name: 'emails')]
+class Email
+{
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
+    private ?int $id = null;
+    #[ORM\Column(type: 'string', name: 'local_part')]
+    private $localPart;
+    #[ORM\Column(type: 'string')]
+    private $domain;
+}
+
+```
+
 **Console**
 
 ```bash
@@ -63,7 +68,7 @@ php bin/doctrine orm:schema-tool:update --force --dump-sql
 ```
 
 ```
-CREATE TABLE emails (id INT AUTO_INCREMENT NOT NULL, localPart VARCHAR(255) NOT NULL, domain VARCHAR(255) NOT NULL, is_login TINYINT(1) NOT NULL, PRIMARY KEY(id));
+CREATE TABLE emails (id INT AUTO_INCREMENT NOT NULL, local_part VARCHAR(255) NOT NULL, domain VARCHAR(255) NOT NULL, PRIMARY KEY(id));
 CREATE TABLE personal_details_emails (personal_details_id INT NOT NULL, email_id INT NOT NULL, INDEX IDX_1A1C2E72FBCAA082 (personal_details_id), UNIQUE INDEX UNIQ_1A1C2E72A832C1C9 (email_id), PRIMARY KEY(personal_details_id, email_id));
 ALTER TABLE personal_details_emails ADD CONSTRAINT FK_1A1C2E72FBCAA082 FOREIGN KEY (personal_details_id) REFERENCES personal_details (id);
 ALTER TABLE personal_details_emails ADD CONSTRAINT FK_1A1C2E72A832C1C9 FOREIGN KEY (email_id) REFERENCES emails (id);
@@ -85,18 +90,18 @@ show tables;
 ```
 
 ```
-+--------------------------+
-| Tables_in_doctrinelab    |
-+--------------------------+
-| author_autopresentations |
-| authors                  |
-| emails                   |
-| personal_details         |
-| personal_details_emails  |
-| quotes                   |
-| sources                  |
-+--------------------------+
-7 rows in set (0,001 sec)
++-------------------------+
+| Tables_in_doctrinelab   |
++-------------------------+
+| authors                 |
+| autopromotions          |
+| emails                  |
+| personal_details        |
+| personal_details_emails |
+| quotes                  |
+| sources                 |
++-------------------------+
+7 rows in set (0,015 sec)
 ```
 
 ```sql
@@ -125,9 +130,8 @@ describe emails;
 | id         | int(11)      | NO   | PRI | NULL    | auto_increment |
 | local_part | varchar(255) | NO   |     | NULL    |                |
 | domain     | varchar(255) | NO   |     | NULL    |                |
-| is_login   | tinyint(1)   | NO   |     | NULL    |                |
 +------------+--------------+------+-----+---------+----------------+
-4 rows in set (0,002 sec)
+3 rows in set (0,002 sec)
 ```
 
 ```sql
@@ -144,10 +148,48 @@ describe personal_details_emails;
 2 rows in set (0,002 sec)
 ```
 
-**`src/Email.php`**
+[**`src/PersonalDetails.php`**](../../entities/associations/one_to_many/unidirectional/PersonalDetails.php)
 
 ```php
 <?php
+
+declare(strict_types=1);
+
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+
+#[ORM\Entity]
+#[ORM\Table(name: 'personal_details')]
+class PersonalDetails
+{
+    // ...
+    public function __construct()
+    {
+        $this->emails = new ArrayCollection();
+    }
+
+    // ...
+
+    /**
+     * @param Email $email
+     *
+     * @return void
+     */
+    public function addEmail(Email $email)
+    {
+        $this->emails->add($email);
+    }
+}
+
+```
+
+[**`src/Email.php`**](../../entities/associations/one_to_many/unidirectional/Email.php)
+
+```php
+<?php
+
+declare(strict_types=1);
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -178,42 +220,15 @@ class Email
 
 ```
 
-**`src/PersonalDetails.php`**
+[**`example/associations/one_to_many/unidirectional/create_personal_details_with_email.php`**](../../example/associations/one_to_many/unidirectional/create_personal_details_with_email.php)
 
 ```php
 <?php
+// create_personal_details_with_email.php <first_name> <last_name> <email>
 
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\Collection;
+declare(strict_types=1);
 
-#[ORM\Entity]
-#[ORM\Table(name: 'personal_details')]
-class PersonalDetails
-{
-    // ...
-
-    /**
-     * @param Email $email
-     *
-     * @return void
-     */
-    public function setEmail(Email $email)
-    {
-        $this->emails->add($email);
-    }
-
-    // ...
-}
-
-```
-
-**`php example/associations/one_to_many_unidirectional_create.php`**
-
-```php
-<?php
-// one_to_many_unidirectional_create.php <first_name> <last_name> <email>
-
-require_once __DIR__ . "/../../bootstrap.php";
+require_once __DIR__ . "/../../../../bootstrap.php";
 
 $firstName = $argv[1];
 $lastName = $argv[2];
@@ -225,26 +240,26 @@ $email->set($emailAddress);
 $personalDetails = new PersonalDetails();
 $personalDetails->setFirstName($firstName);
 $personalDetails->setLastName($lastName);
-$personalDetails->setEmail($email);
+$personalDetails->addEmail($email);
 
 $entityManager->persist($email);
 $entityManager->persist($personalDetails);
 $entityManager->flush();
 
-echo "Created Email with ID " . $email->getId() . "\n";
-echo "Created PersonalDetails with ID " . $personalDetails->getId() . "\n";
+print("Created Personal Details with ID " . $personalDetails->getId() . "\n");
+print("Created Email with ID " . $email->getId() . "\n");
 
 ```
 
 **Console**
 
 ```bash
-php example/associations/one_to_many_unidirectional_create.php Florence Wood florence.wood@scribes.com
+php example/associations/one_to_many/unidirectional/create_personal_details_with_email.php Florence Wood florence.wood@scribes.com
 ```
 
 ```
+Created Personal Details with ID 2
 Created Email with ID 1
-Created PersonalDetails with ID 3
 ```
 
 **Database**
@@ -258,10 +273,9 @@ select * from personal_details;
 | id | first_name | last_name |
 +----+------------+-----------+
 |  1 | Aleksander | Głowacki  |
-|  2 | Jasmine    | Argenta   |
-|  3 | Florence   | Wood      |
+|  2 | Florence   | Wood      |
 +----+------------+-----------+
-3 rows in set (0,001 sec)
+2 rows in set (0,001 sec)
 ```
 
 ```sql
@@ -269,11 +283,11 @@ select * from emails;
 ```
 
 ```
-+----+---------------+-------------+----------+
-| id | local_part    | domain      | is_login |
-+----+---------------+-------------+----------+
-|  1 | florence.wood | scribes.com |        0 |
-+----+---------------+-------------+----------+
++----+---------------+-------------+
+| id | local_part    | domain      |
++----+---------------+-------------+
+|  1 | florence.wood | scribes.com |
++----+---------------+-------------+
 1 row in set (0,001 sec)
 ```
 
@@ -285,15 +299,45 @@ select * from personal_details_emails;
 +---------------------+----------+
 | personal_details_id | email_id |
 +---------------------+----------+
-|                   3 |        1 |
+|                   2 |        1 |
 +---------------------+----------+
 1 row in set (0,001 sec)
 ```
 
-**`src/Email.php`**
+[**`src/PersonalDetails.php`**](../../entities/associations/one_to_many/unidirectional/PersonalDetails.php)
 
 ```php
 <?php
+
+declare(strict_types=1);
+
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+
+#[ORM\Entity]
+#[ORM\Table(name: 'personal_details')]
+class PersonalDetails
+{
+    // ...
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getEmails()
+    {
+        return $this->emails;
+    }
+}
+
+```
+
+[**`src/Email.php`**](../../entities/associations/one_to_many/unidirectional/Email.php)
+
+```php
+<?php
+
+declare(strict_types=1);
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -317,38 +361,15 @@ class Email
 
 ```
 
-**`src/PersonalDetails.php`**
+[**`example/associations/one_to_many/unidirectional/read_personal_details_with_emails.php`**](../../example/associations/one_to_many/unidirectional/read_personal_details_with_emails.php)
 
 ```php
 <?php
+// read_personal_details_with_emails.php <id>
 
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\Collection;
+declare(strict_types=1);
 
-#[ORM\Entity]
-#[ORM\Table(name: 'personal_details')]
-class PersonalDetails
-{
-    // ...
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getEmails()
-    {
-        return $this->emails;
-    }
-}
-
-```
-
-**`php example/associations/one_to_many_unidirectional_read.php`**
-
-```php
-<?php
-// one_to_one_bidirectional_read.php <id>
-
-require_once __DIR__ . "/../../bootstrap.php";
+require_once __DIR__ . "/../../../../bootstrap.php";
 
 $id = $argv[1];
 
@@ -367,8 +388,13 @@ echo sprintf(
     $personalDetails->getLastName()
 );
 
+$showPattern = "✤ %s\n";
+
 foreach($personalDetails->getEmails() as $email) {
-    print($email->get() . "\n");
+    printf(
+        $showPattern,
+        $email->get()
+    );
 }
 
 ```
@@ -376,10 +402,10 @@ foreach($personalDetails->getEmails() as $email) {
 **Console**
 
 ```bash
-php example/associations/one_to_many_unidirectional_read.php 3
+php example/associations/one_to_many/unidirectional/read_personal_details_with_emails.php 2
 ```
 
 ```
 Florence Wood
-florence.wood@scribes.com
+✤ florence.wood@scribes.com
 ```
