@@ -4,7 +4,7 @@
 
 ### One to one: Bidirectional
 
-[**`src\Author`**](../../entities/associations/one_to_one/bidirectional/Author.php)
+[**`src/Author`**](../../entities/associations/one_to_one/bidirectional/Author.php)
 
 ```php
 <?php
@@ -129,7 +129,7 @@ describe autopromotions;
 3 rows in set (0,003 sec)
 ```
 
-[**`src\Author`**](../../entities/associations/one_to_one/bidirectional/Author.php)
+[**`src/Author`**](../../entities/associations/one_to_one/bidirectional/Author.php)
 
 ```php
 <?php
@@ -279,7 +279,7 @@ select * from autopromotions;
 1 row in set (0,000 sec)
 ```
 
-[**`src\Author`**](../../entities/associations/one_to_one/bidirectional/Author.php)
+[**`src/Author`**](../../entities/associations/one_to_one/bidirectional/Author.php)
 
 ```php
 <?php

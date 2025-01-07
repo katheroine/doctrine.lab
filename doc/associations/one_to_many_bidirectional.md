@@ -4,7 +4,7 @@
 
 ### One to many: Bidirectional
 
-[**`src\Quote.php`**](../../entities/associations/one_to_many/unidirectional/Quote.php)
+[**`src/Quote.php`**](../../entities/associations/one_to_many/unidirectional/Quote.php)
 
 ```php
 <?php
@@ -29,7 +29,7 @@ class Quote
 
 ```
 
-[**`src\Source.php`**](../../entities/associations/one_to_many/unidirectional/Source.php)
+[**`src/Source.php`**](../../entities/associations/one_to_many/unidirectional/Source.php)
 
 ```php
 <?php
@@ -129,7 +129,7 @@ describe sources;
 2 rows in set (0,002 sec)
 ```
 
-[**`src\Quote.php`**](../../entities/associations/one_to_many/unidirectional/Quote.php)
+[**`src/Quote.php`**](../../entities/associations/one_to_many/unidirectional/Quote.php)
 
 ```php
 <?php
@@ -157,7 +157,7 @@ class Quote
 
 ```
 
-[**`src\Source.php`**](../../entities/associations/one_to_many/unidirectional/Source.php)
+[**`src/Source.php`**](../../entities/associations/one_to_many/unidirectional/Source.php)
 
 ```php
 <?php
@@ -265,7 +265,7 @@ select * from sources;
 1 row in set (0,004 sec)
 ```
 
-[**`src\Quote.php`**](../../entities/associations/one_to_many/unidirectional/Quote.php)
+[**`src/Quote.php`**](../../entities/associations/one_to_many/unidirectional/Quote.php)
 
 ```php
 <?php
@@ -291,7 +291,7 @@ class Quote
 
 ```
 
-[**`src\Source.php`**](../../entities/associations/one_to_many/unidirectional/Source.php)
+[**`src/Source.php`**](../../entities/associations/one_to_many/unidirectional/Source.php)
 
 ```php
 <?php

@@ -4,7 +4,7 @@
 
 ### One to one: Unidirectional
 
-[**`src\Author.php`**](../../entities/associations/one_to_one/unidirectional/Author.php)
+[**`src/Author.php`**](../../entities/associations/one_to_one/unidirectional/Author.php)
 
 ```php
 <?php
@@ -130,7 +130,7 @@ describe personal_details;
 3 rows in set (0,003 sec)
 ```
 
-[**`src\Author.php`**](../../entities/associations/one_to_one/unidirectional/Author.php)
+[**`src/Author.php`**](../../entities/associations/one_to_one/unidirectional/Author.php)
 
 ```php
 <?php
@@ -276,7 +276,7 @@ select * from authors;
 
 ```
 
-[**`src\Author.php`**](../../entities/associations/one_to_one/unidirectional/Author.php)
+[**`src/Author.php`**](../../entities/associations/one_to_one/unidirectional/Author.php)
 
 ```php
 <?php

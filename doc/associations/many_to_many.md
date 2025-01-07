@@ -3,7 +3,7 @@
 
 ### Many to many
 
-**`src\Author.php`**
+**`src/Author.php`**
 
 ```php
 <?php
@@ -30,7 +30,7 @@ class Author
 
 ```
 
-**`src\Source`**
+**`src/Source`**
 
 ```php
 <?php
