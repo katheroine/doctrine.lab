@@ -47,7 +47,7 @@ class Quote
     /**
      * @return string
      */
-    public function getContent()
+    public function getContent(): string
     {
         return $this->content;
     }
