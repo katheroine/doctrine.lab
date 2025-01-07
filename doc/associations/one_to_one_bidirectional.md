@@ -2,7 +2,7 @@
 [▲ Previous: Deleting records](../crud_operations/deleting_records.md)
 [▼ Next: One to one: Unidirectional](one_to_one_unidirectional.md)
 
-### One to one: Unidirectional
+### One to one: Bidirectional
 
 [**`src\Author`**](../../entities/associations/one_to_one/bidirectional/Author.php)
 

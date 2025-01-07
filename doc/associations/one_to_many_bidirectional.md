@@ -1,6 +1,6 @@
 [⌂ Home](../../README.md)
 [▲ Previous: One to one: Unidirectional](../associations/one_to_one_unidirectional.md)
-[▼ Next: Many to many](../associations/many_to_many.md)
+[▼ Next: One to many: Unidirectional](../associations/one_to_many_unidirectional.md)
 
 ### One to many: Bidirectional
 
@@ -194,7 +194,7 @@ class Source
 
 ```
 
-[**`example/associations/one_to_one/unidirectional/create_quote_with_source.php`**](../../example/associations/one_to_many/bidirectional/create_quote_with_source.php)
+[**`example/associations/one_to_many/bidirectional/create_quote_with_source.php`**](../../example/associations/one_to_many/bidirectional/create_quote_with_source.php)
 
 ```php
 <?php
@@ -318,7 +318,7 @@ class Source
 
 ```
 
-[**`example/associations/one_to_one/unidirectional/read_quote_with_source.php`**](../../example/associations/one_to_many/bidirectional/read_quote_with_source.php)
+[**`example/associations/one_to_many/bidirectional/read_quote_with_source.php`**](../../example/associations/one_to_many/bidirectional/read_quote_with_source.php)
 
 ```php
 <?php
@@ -350,7 +350,7 @@ printf(
 **Console**
 
 ```bash
-example/associations/one_to_one/unidirectional/read_quote_with_source.php 4
+php example/associations/one_to_many/bidirectional/read_quote_with_source.php 4
 ```
 
 ```
