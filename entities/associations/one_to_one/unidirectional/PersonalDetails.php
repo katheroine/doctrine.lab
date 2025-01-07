@@ -1,8 +1,6 @@
 <?php
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'personal_details')]
@@ -16,19 +14,6 @@ class PersonalDetails
     private string $firstName;
     #[ORM\Column(type: 'string', name: 'last_name')]
     private string $lastName;
-    /**
-     * @var Collection<int, Email>
-     */
-    #[ORM\ManyToMany(targetEntity: Email::class)]
-    #[ORM\JoinTable(name: 'personal_details_emails')]
-    #[ORM\JoinColumn(name: 'personal_details_id', referencedColumnName: 'id')]
-    #[ORM\InverseJoinColumn(name: 'email_id', referencedColumnName: 'id', unique: true)]
-    private Collection $emails;
-
-    public function __construct()
-    {
-        $this->emails = new ArrayCollection();
-    }
 
     /**
      * @return int
@@ -72,23 +57,5 @@ class PersonalDetails
     public function getLastName()
     {
         return $this->lastName;
-    }
-
-    /**
-     * @param Email $email
-     *
-     * @return void
-     */
-    public function setEmail(Email $email)
-    {
-        $this->emails->add($email);
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getEmails()
-    {
-        return $this->emails;
     }
 }
