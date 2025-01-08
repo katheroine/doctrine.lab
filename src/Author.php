@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'authors')]
@@ -25,6 +26,11 @@ class Author
     #[ORM\OneToOne(targetEntity: PersonalDetails::class)]
     #[ORM\JoinColumn(name: 'personal_details_id', referencedColumnName: 'id')]
     private ?PersonalDetails $personalDetails;
+    /**
+     * @var Collection<int, Source>
+     */
+    #[ORM\ManyToMany(targetEntity: Source::class, mappedBy: 'authors')]
+    private Collection $sources;
 
     /**
      * @return int

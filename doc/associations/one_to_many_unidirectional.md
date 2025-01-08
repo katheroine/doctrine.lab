@@ -1,5 +1,6 @@
 [⌂ Home](../../README.md)
 [▲ Previous: One to many: Bidirectional](../associations/one_to_many_bidirectional.md)
+[▼ Next: Many to many: Bidirectional](../associations/many_to_many_bidirectional.md)
 
 ### One to many: Unidirectional
 
