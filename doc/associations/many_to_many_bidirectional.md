@@ -1,7 +1,7 @@
 [⌂ Home](../../README.md)
 [▲ Previous: One to many: Unidirectional](../associations/one_to_many_unidirectional.md)
 
-### Many to many
+### Many to many: Bidirectional
 
 [**`src/Source`**](../../entities/associations/many_to_many/bidirectional/Source.php)
 
@@ -23,8 +23,8 @@ class Source
      */
     #[ORM\ManyToMany(targetEntity: Author::class, inversedBy: 'sources')]
     #[ORM\JoinTable(name: 'sources_authors')]
-    #[ORM\JoinColumn(name: 'author_id', referencedColumnName: 'id')]
-    #[ORM\InverseJoinColumn(name: 'source_id', referencedColumnName: 'id')]
+     #[ORM\JoinColumn(name: 'source_id', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'author_id', referencedColumnName: 'id')]
     private Collection $authors;
 
     // ...
@@ -262,9 +262,88 @@ select * from sources_authors;
 
 ```
 +-----------+-----------+
-| author_id | source_id |
+| source_id | author_id |
 +-----------+-----------+
 |         2 |         3 |
 +-----------+-----------+
 1 row in set (0,001 sec)
+```
+
+[**`src/Source`**](../../entities/associations/many_to_many/bidirectional/Source.php)
+
+```php
+<?php
+
+declare(strict_types=1);
+
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+
+#[ORM\Entity]
+#[ORM\Table(name: 'sources')]
+class Source
+{
+    // ...
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getAuthors()
+    {
+        return $this->authors;
+    }
+}
+
+```
+
+[**`example/associations/many_to_many/bidirectional/read_source_with_authors.php`**](../../example/associations/many_to_many/bidirectional/read_source_with_authors.php)
+
+
+```php
+<?php
+// read_source_with_authors.php <id>
+
+declare(strict_types=1);
+
+require_once __DIR__ . "/../../../../bootstrap.php";
+
+$id = $argv[1];
+
+$source = $entityManager->find('Source', $id);
+
+if ($source === null) {
+    print("No Source found.\n");
+    exit(1);
+}
+
+$showPattern = "\"%s\"\n";
+
+printf(
+    $showPattern,
+    $source->getTitle()
+);
+
+$authors = $source->getAuthors();
+
+$showPattern = "✤ %s\n";
+
+foreach($authors as $author) {
+    printf(
+        $showPattern,
+        $author->getPenname()
+    );
+}
+
+```
+
+**Console**
+
+```bash
+php example/associations/many_to_many/bidirectional/read_source_with_authors.php 2
+```
+
+```
+"Il pendolo di Foucault"
+✤ Umberto Eco
 ```

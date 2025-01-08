@@ -26,8 +26,8 @@ class Source
      */
     #[ORM\ManyToMany(targetEntity: Author::class, inversedBy: 'sources')]
     #[ORM\JoinTable(name: 'sources_authors')]
-    #[ORM\JoinColumn(name: 'author_id', referencedColumnName: 'id')]
-    #[ORM\InverseJoinColumn(name: 'source_id', referencedColumnName: 'id')]
+    #[ORM\JoinColumn(name: 'source_id', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'author_id', referencedColumnName: 'id')]
     private Collection $authors;
 
     public function __construct()
@@ -78,5 +78,13 @@ class Source
     public function addAuthor(Author $author)
     {
         $this->authors->add($author);
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getAuthors()
+    {
+        return $this->authors;
     }
 }

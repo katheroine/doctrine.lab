@@ -16,4 +16,5 @@ Laboratory of Doctrine.
     2. One to many
         1. [Bidirectional](doc/associations/one_to_many_bidirectional.md)
         2. [Unidirectional](doc/associations/one_to_many_unidirectional.md)
-    3. [Many to many](doc/associations/many_to_many.md)
+    3. Many to many
+        1. [Bidirectional](doc/associations/many_to_many_bidirectional.md)
