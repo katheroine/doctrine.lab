@@ -287,9 +287,9 @@ class Source
     // ...
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
-    public function getAuthors()
+    public function getAuthors(): Collection
     {
         return $this->authors;
     }
@@ -346,4 +346,82 @@ php example/associations/many_to_many/bidirectional/read_source_with_authors.php
 ```
 "Il pendolo di Foucault"
 ✤ Umberto Eco
+```
+
+[**`src/Source`**](../../entities/associations/many_to_many/bidirectional/Source.php)
+
+```php
+<?php
+
+declare(strict_types=1);
+
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+
+#[ORM\Entity]
+#[ORM\Table(name: 'sources')]
+class Source
+{
+    // ...
+
+    /**
+     * @return Collection
+     */
+    public function getAuthors(): Collection
+    {
+        return $this->authors;
+    }
+}
+
+```
+
+[**`example/associations/many_to_many/bidirectional/read_author_with_sources.php`**](../../example/associations/many_to_many/bidirectional/read_author_with_sources.php)
+
+```php
+<?php
+// read_author_with_sources.php <id>
+
+declare(strict_types=1);
+
+require_once __DIR__ . "/../../../../bootstrap.php";
+
+$id = $argv[1];
+
+$author = $entityManager->find('Author', $id);
+
+if ($author === null) {
+    print("No Author found.\n");
+    exit(1);
+}
+
+$showPattern = "%s\n";
+
+printf(
+    $showPattern,
+    $author->getPenname()
+);
+
+$sources = $author->getSources();
+
+$showPattern = "✤ \"%s\"\n";
+
+foreach($sources as $source) {
+    printf(
+        $showPattern,
+        $source->getTitle()
+    );
+}
+
+```
+
+**Console**
+
+```bash
+php example/associations/many_to_many/bidirectional/read_author_with_sources.php 3
+```
+
+```
+Umberto Eco
+✤ "Il pendolo di Foucault"
 ```
