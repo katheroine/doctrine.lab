@@ -323,9 +323,9 @@ class PersonalDetails
     // ...
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
-    public function getEmails()
+    public function getEmails(): Collection
     {
         return $this->emails;
     }
